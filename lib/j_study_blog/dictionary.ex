@@ -18,11 +18,11 @@ defmodule JStudyBlog.Dictionary do
 
   """
   def list_vocabs do
-    Vocab
-    |> limit(25)
-    |> Repo.all()
-    |> Ecto.Query.where([v], is_nil(v.primary_kanji_id))
-    |> Repo.preload([:alternate_readings, :meanings])
+    query = from(v in Vocab,
+            where: is_nil(v.primary_kanji_id),
+            limit: 25)
+    Repo.all(query)
+    |> Repo.preload([:alternate_readings, :meanings, :parts_of_speech])
   end
 
   @doc """

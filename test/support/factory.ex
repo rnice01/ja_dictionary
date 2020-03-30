@@ -31,22 +31,30 @@ defmodule JStudyBlog.Factory do
     }
   end
 
-  def vocab_parts_of_speech_factory do
+  def vocab_parts_of_speech_factory(attrs) do
+    %VocabPartsOfSpeech{
+      vocab_id: Map.get(attrs, :vocab_id),
+      parts_of_speech_id: Map.get(attrs, :pos_id)
+    }
+  end
+
+  def vocab_with_parts_of_speech_factory do
     vocab = insert(:vocab)
     pos = insert(:part_of_speech)
+    insert(:vocab_parts_of_speech, %{vocab_id: vocab.id, pos_id: pos.id})
     %VocabPartsOfSpeech{
       vocab_id: vocab.id,
       parts_of_speech_id: pos.id
     }
     %{
+      id: vocab.id,
       kanji: vocab.kanji,
       kana: vocab.kana,
+      meanings: vocab.meanings,
+      alternate_readings: vocab.alternate_readings,
       parts_of_speech: [
         pos
       ]
     }
-  end
-
-  def vocab_with_parts_of_speech_factory do
   end
 end
