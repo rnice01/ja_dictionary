@@ -5,8 +5,7 @@ defmodule JStudyBlog.Dictionary.PartOfSpeech do
   schema "parts_of_speech" do
     field :code, :string
     field :description, :string
-    belongs_to :vocab, JStudyBlog.Dictionary.Vocab
-    many_to_many :vocabs, JStudyBlog.Dictionary.Vocab, join_through: "vocab_parts_of_speech"
+    many_to_many :vocabs, JStudyBlog.Dictionary.Vocab, join_through: VocabPartsOfSpeech
     timestamps()
   end
 
