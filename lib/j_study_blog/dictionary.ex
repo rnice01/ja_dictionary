@@ -21,7 +21,8 @@ defmodule JStudyBlog.Dictionary do
     Vocab
     |> limit(25)
     |> Repo.all()
-    |> Repo.preload([:alternate_kanji, :meanings])
+    |> Ecto.Query.where([v], is_nil(v.primary_kanji_id))
+    |> Repo.preload([:alternate_readings, :meanings])
   end
 
   @doc """

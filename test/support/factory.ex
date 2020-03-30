@@ -14,6 +14,12 @@ defmodule JStudyBlog.Factory do
           definition: "the definition",
           language: "language"
         }
+      ],
+      alternate_readings: [
+        %Vocab{
+          kanji: "alternate kanji 1",
+          kana: "alternate kana 1"
+        }
       ]
     }
   end
@@ -28,7 +34,7 @@ defmodule JStudyBlog.Factory do
   def vocab_parts_of_speech_factory do
     vocab = insert(:vocab)
     pos = insert(:part_of_speech)
-    v_pos = %VocabPartsOfSpeech{
+    %VocabPartsOfSpeech{
       vocab_id: vocab.id,
       parts_of_speech_id: pos.id
     }
