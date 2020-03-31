@@ -6,7 +6,7 @@ defmodule JStudyBlog.DictionaryTest do
   describe "vocabs" do
     alias JStudyBlog.Dictionary.Vocab
 
-    @valid_attrs %{kana: "some kana", kanji: "some kanji_reading"}
+    @valid_attrs %{kana: "some kana", kanji: "some kanji_reading", meanings: [], alternate_readings: [], parts_of_speech: []}
     @update_attrs %{kana: "some kana", kanji: "some updated kanji_reading"}
     @invalid_attrs %{kana: nil, kanji: nil}
 

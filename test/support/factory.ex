@@ -5,10 +5,10 @@ defmodule JStudyBlog.Factory do
   alias JStudyBlog.Dictionary.PartOfSpeech
   alias JStudyBlog.Dictionary.VocabPartsOfSpeech
 
-  def vocab_factory do
+  def vocab_factory(attrs) do
     %Vocab{
-      kanji: "some kanji",
-      kana: "some kana",
+      kanji: Map.get(attrs, :kanji, "some kanji"),
+      kana: Map.get(attrs, :kana, "some kana"),
       meanings: [
         %VocabMeaning{
           definition: "the definition",
@@ -38,8 +38,8 @@ defmodule JStudyBlog.Factory do
     }
   end
 
-  def vocab_with_parts_of_speech_factory do
-    vocab = insert(:vocab)
+  def vocab_with_parts_of_speech_factory(attrs) do
+    vocab = insert(:vocab, attrs)
     pos = insert(:part_of_speech)
     insert(:vocab_parts_of_speech, %{vocab_id: vocab.id, pos_id: pos.id})
     %VocabPartsOfSpeech{

@@ -18,10 +18,12 @@ defmodule JStudyBlogWeb.Router do
 
     get "/", PageController, :index
     resources "/vocabs", VocabController
+    post "/search", SearchController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", JStudyBlogWeb do
-  #   pipe_through :api
-  # end
+   scope "/api", JStudyBlogWeb do
+     pipe_through :api
+     post "/search", SearchController, :index
+   end
 end

@@ -2,6 +2,13 @@ defmodule JStudyBlog.Dictionary.Vocab do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @type t :: %JStudyBlog.Dictionary.Vocab{
+      kana: String.t,
+      kanji: String.t,
+      meanings: list(JStudyBlog.Dictionary.VocabMeaning.t),
+      alternate_readings: %{kana: String.t, kanji: String.t}
+    }
+
   schema "vocabs" do
     field :kana, :string
     field :kanji, :string

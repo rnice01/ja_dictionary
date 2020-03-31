@@ -16,7 +16,7 @@ defmodule Mix.Tasks.JDict.ImportTest do
         kana_readings: ["kana1", "kana2", "kana3"],
         meanings: ["meaning1", "meaning2", "meaning3"],
       }
-  
+
       assert Mix.Tasks.JDict.Import.entry_to_vocabs(entry) == [
         %Vocab{
           kanji: "keb1",
@@ -173,7 +173,7 @@ defmodule Mix.Tasks.JDict.ImportTest do
       Mix.Tasks.JDict.Import.insert_entry(entry)
       inserted = Repo.get_by(Vocab, kanji: "some kanji")
                |> Repo.preload([:parts_of_speech])
-      
+
       assert %{
         kanji: "some kanji",
         kana: "some kana",
@@ -187,12 +187,5 @@ defmodule Mix.Tasks.JDict.ImportTest do
         ]
       } = inserted
     end
-  end
-
-  test "something" do
-    v = build(:vocab_parts_of_speech)
-
-    assert %{kanji: "some kanji", parts_of_speech: [pos]} = v
-    assert %{code: "n"} = pos
   end
 end

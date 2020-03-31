@@ -105,4 +105,16 @@ defmodule JStudyBlog.Dictionary do
   def change_vocab(%Vocab{} = vocab) do
     Vocab.changeset(vocab, %{})
   end
+
+
+  def search_by_kanji(kanji) do
+    like = "%#{kanji}%"
+    query = from(v in Vocab,
+            where: is_nil(v.primary_kanji_id) and like(v.kanji, ^like),
+            limit: 25)
+    vocabs = Repo.all(query)
+    |> Repo.preload([:alternate_readings, :meanings, :parts_of_speech])
+
+    %{vocabs: vocabs}
+  end
 end

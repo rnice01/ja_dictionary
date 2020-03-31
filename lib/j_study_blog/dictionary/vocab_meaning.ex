@@ -2,6 +2,8 @@ defmodule JStudyBlog.Dictionary.VocabMeaning do
   use Ecto.Schema
   import Ecto.Changeset
 
+  @type t :: %JStudyBlog.Dictionary.VocabMeaning{language: String.t, definition: String.t}
+
   schema "vocab_meanings" do
     field :language, :string
     field :definition, :string
