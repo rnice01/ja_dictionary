@@ -12,7 +12,7 @@ database_url =
     """
 
 config :j_study_blog, JStudyBlog.Repo,
-  # ssl: true,
+  ssl: true,
   url: database_url,
   pool_size: String.to_integer(System.get_env("POOL_SIZE") || "10")
 
@@ -28,6 +28,8 @@ config :j_study_blog, JStudyBlogWeb.Endpoint,
     port: String.to_integer(System.get_env("PORT") || "4000"),
     transport_options: [socket_opts: [:inet6]]
   ],
+  url: [scheme: "https", host: "cryptic-anchorage-93937.herokuapp.com", port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
   secret_key_base: secret_key_base
 
 # ## Using releases (Elixir v1.9+)
