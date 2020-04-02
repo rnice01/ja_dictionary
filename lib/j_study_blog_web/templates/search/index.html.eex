@@ -1,0 +1,5 @@
+<h1>JStudy Search</h1>
+<%= form_for @conn, Routes.search_path(@conn, :index), [as: :search], fn s -> %>
+  <%= text_input s, :kanji %>
+  <%= submit "Search" %>
+<% end %>

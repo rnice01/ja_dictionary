@@ -1,0 +1,18 @@
+<h1>Listing Searches</h1>
+
+<ul>
+  <%= for vocab <- @vocabs do %>
+    <li>
+        <p>Kanji: <%= vocab.kanji %></p>
+        <p>Reading: <%= vocab.kana %></p>
+        <div>
+          <h5>Meanings:</h5>
+          <ul>
+          <%= for m <- vocab.meanings do %>
+          <li><%= m.definition %></li>
+          <% end %>
+          </ul>
+        </div>
+    </li>
+  <% end %>
+</ul>

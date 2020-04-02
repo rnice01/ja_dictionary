@@ -18,7 +18,8 @@ defmodule JStudyBlogWeb.Router do
 
     get "/", PageController, :index
     resources "/vocabs", VocabController
-    post "/search", SearchController, :index
+    get "/search", SearchController, :index
+    post "/search", SearchController, :search
   end
 
   # Other scopes may use custom stacks.

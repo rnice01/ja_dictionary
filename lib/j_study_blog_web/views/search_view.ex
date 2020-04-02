@@ -3,6 +3,10 @@ defmodule JStudyBlogWeb.SearchView do
   alias JStudyBlogWeb.SearchView
   alias JStudyBlogWeb.Helpers
 
+  def render("results.html", %{searches: searches}) do
+    searches
+  end
+
   def render("index.json", %{searches: searches}) do
     %{vocabs: vocabs} = searches
     %{data: %{

@@ -5,8 +5,12 @@ defmodule JStudyBlogWeb.SearchController do
 
   action_fallback JStudyBlogWeb.FallbackController
 
-  def index(conn, %{"kanji" => k}) do
+  def index(conn, _) do
+    render(conn, "index.html")
+  end
+
+  def search(conn, %{"search" => %{"kanji" => k}}) do
     searches = Dictionary.search_by_kanji(k)
-    render(conn, "index.json", searches: searches)
+    render(conn, "results.html", vocabs: searches.vocabs)
   end
 end
