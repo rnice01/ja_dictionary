@@ -111,6 +111,7 @@ defmodule JStudyBlog.Dictionary do
     like = "%#{kanji}%"
     query = from(v in Vocab,
             where: is_nil(v.primary_kanji_id) and like(v.kanji, ^like),
+            order_by: [fragment("length(?) ASC", v.kanji)],
             limit: 25)
     vocabs = Repo.all(query)
     |> Repo.preload([:alternate_readings, :meanings, :parts_of_speech])
