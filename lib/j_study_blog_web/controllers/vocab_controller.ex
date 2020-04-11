@@ -7,8 +7,13 @@ defmodule JStudyBlogWeb.VocabController do
   action_fallback JStudyBlogWeb.FallbackController
 
   def index(conn, _params) do
-    vocabs = Dictionary.list_vocabs()
-    render(conn, "index.json", vocabs: vocabs)
+    render(conn, "index.html", vocabs: nil)
+  end
+
+  def search(conn, %{"kanji" => k}) do
+    vocabs = Dictionary.find_vocabs_by(%{kanji: k})
+
+    render(conn, "index.html", vocabs: vocabs)
   end
 
   def create(conn, %{"vocab" => vocab_params}) do

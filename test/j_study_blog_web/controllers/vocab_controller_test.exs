@@ -5,20 +5,15 @@ defmodule JStudyBlogWeb.VocabControllerTest do
   alias JStudyBlog.Dictionary
   alias JStudyBlog.Dictionary.Vocab
 
-  describe "index" do
-    test "lists all vocabs", %{conn: conn} do
-      vocab = build(:vocab_with_parts_of_speech)
+  describe "search" do
+    test "lists the matching vocabs", %{conn: conn} do
+      match1 = build(:vocab_with_parts_of_speech, kanji: "kanji")
+      match2 = build(:vocab_with_parts_of_speech, kanji: "kanji")
 
-      conn = get(conn, Routes.vocab_path(conn, :index))
 
-      assert [%{
-        "id" => vocab.id,
-        "kanji" => vocab.kanji,
-        "kana" => vocab.kana,
-        "meanings" => Enum.map(vocab.meanings, fn vm -> %{"definition" => vm.definition, "language" => vm.language} end),
-        "alternate_readings" => Enum.map(vocab.alternate_readings, fn ar -> %{"kanji" => ar.kanji, "kana" => ar.kana} end),
-        "parts_of_speech" => Enum.map(vocab.parts_of_speech, fn pos -> %{"code" => pos.code, "description" => pos.description} end)
-      }] == json_response(conn, 200)["data"]
+      conn = post(conn, Routes.vocab_path(conn, :search), %{"kanji" => "kanji"})
+
+      assert html_response(conn, 200) =~ match1.kanji
     end
   end
 end

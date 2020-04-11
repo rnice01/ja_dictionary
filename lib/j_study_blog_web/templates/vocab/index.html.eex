@@ -1,0 +1,31 @@
+<%= form_for @conn, Routes.vocab_path(@conn, :search), fn s -> %>
+  <%= text_input s, :kanji %>
+  <%= submit "Search" %>
+<% end %>
+
+<%= unless @vocabs == nil do %>
+  <h1>Listing Searches</h1>
+  <div class="results">
+    <%= for vocab <- @vocabs do %>
+      <div class="result">
+          <h2 class="readings">
+            <span class="primary-reading"><%= vocab.kanji %></span>
+            <span class="secondary-reading"> (<%= vocab.kana %>)</span>
+          </h2>
+          <%= if length(vocab.alternate_readings) == 0 do %>
+            <ul>
+              <%= for alt <- vocab.alternate_readings do %>
+                <li><%= alt.kanji %> (<%= alt.kana %>)</li>
+              <% end %>
+            </ul>
+          <% end %>
+          <div>
+            <h3>Meanings:</h3>
+            <div>
+              <%= Enum.join(Enum.map(vocab.meanings, fn vm -> vm.definition end), ", ") %>
+            </div>
+          </div>
+      </div>
+    <% end %>
+  </div>
+<% end %>
