@@ -17,14 +17,7 @@ defmodule JStudyBlogWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
-    resources "/vocabs", VocabController
-    get "/search", SearchController, :index
-    post "/search", SearchController, :search
+    resources "/vocabs", VocabController, only: [:index]
+    post "/vocabs", VocabController, :search
   end
-
-  # Other scopes may use custom stacks.
-   scope "/api", JStudyBlogWeb do
-     pipe_through :api
-     post "/search", SearchController, :index
-   end
 end
