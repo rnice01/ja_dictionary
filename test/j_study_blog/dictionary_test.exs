@@ -1,5 +1,6 @@
 defmodule JStudyBlog.DictionaryTest do
   use JStudyBlog.DataCase
+  import JStudyBlog.Factory
 
   alias JStudyBlog.Dictionary
 

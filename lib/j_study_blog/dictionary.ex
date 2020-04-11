@@ -22,7 +22,6 @@ defmodule JStudyBlog.Dictionary do
             where: is_nil(v.primary_kanji_id),
             limit: 25)
     Repo.all(query)
-    |> Repo.preload([:alternate_readings, :meanings, :parts_of_speech])
   end
 
   @doc """
@@ -117,5 +116,17 @@ defmodule JStudyBlog.Dictionary do
     |> Repo.preload([:alternate_readings, :meanings, :parts_of_speech])
 
     %{vocabs: vocabs}
+  end
+
+  def find_vocabs_by(%{kanji: k}) do
+    like = "%#{k}%"
+    query = from(v in Vocab,
+            where: is_nil(v.primary_kanji_id) and like(v.kanji, ^like),
+            order_by: [fragment("length(?) ASC", v.kanji)],
+            limit: 25)
+    vocabs = Repo.all(query)
+    |> Repo.preload([:alternate_readings, :meanings, :parts_of_speech])
+
+    vocabs
   end
 end
