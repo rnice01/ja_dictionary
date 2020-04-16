@@ -3,13 +3,16 @@ defmodule JStudyBlog.Repo.Migrations.CreateVocabs do
 
   def change do
     create table(:vocabs) do
-      add :kanji, :string
-      add :kana, :string
+      add :kanji_reading, :string
+      add :kana_reading, :string
+      add :parts_of_speech, {:array, :string}
+      add :meanings, {:array, :string}
       add :primary_kanji_id, references(:vocabs, on_delete: :nothing)
 
       timestamps()
     end
 
-    create index(:vocabs, [:kanji, :kana, :primary_kanji_id])
+    create index(:vocabs, [:kanji_reading, :kana_reading, :primary_kanji_id])
+    create index(:vocabs, [:meanings], [using: "GIN"])
   end
 end

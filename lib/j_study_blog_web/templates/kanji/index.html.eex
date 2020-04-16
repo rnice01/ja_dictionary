@@ -1,0 +1,38 @@
+<h1>Listing Kanji</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Character</th>
+      <th>Meanings</th>
+      <th>Jlpt level</th>
+      <th>Grade</th>
+      <th>Stroke count</th>
+      <th>Onyomi</th>
+      <th>Kunyomi</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for kanji <- @kanji do %>
+    <tr>
+      <td><%= kanji.character %></td>
+      <td><%= kanji.meanings %></td>
+      <td><%= kanji.jlpt_level %></td>
+      <td><%= kanji.grade %></td>
+      <td><%= kanji.stroke_count %></td>
+      <td><%= kanji.onyomi %></td>
+      <td><%= kanji.kunyomi %></td>
+
+      <td>
+        <span><%= link "Show", to: Routes.kanji_path(@conn, :show, kanji) %></span>
+        <span><%= link "Edit", to: Routes.kanji_path(@conn, :edit, kanji) %></span>
+        <span><%= link "Delete", to: Routes.kanji_path(@conn, :delete, kanji), method: :delete, data: [confirm: "Are you sure?"] %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Kanji", to: Routes.kanji_path(@conn, :new) %></span>

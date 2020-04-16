@@ -2,9 +2,7 @@ defmodule Mix.Tasks.JDict.Import do
   import SweetXml
   use Mix.Task
   alias JStudyBlog.Dictionary.Vocab
-  alias JStudyBlog.Dictionary.VocabMeaning
-  alias JStudyBlog.Dictionary.PartOfSpeech
-  alias JStudyBlog.Dictionary.VocabPartsOfSpeech
+  alias JStudyBlog.Dictionary.Kanji
   alias JStudyBlog.Repo
   alias JStudyBlog.JDict.VocabEntry
   alias Ecto.Multi
@@ -12,6 +10,37 @@ defmodule Mix.Tasks.JDict.Import do
   @shortdoc "Imports the JDictionary and Kanjidic XML files to the database"
   def run(_) do
     Mix.Task.run("app.start")
+    import_k_dict()
+    #import_j_dict()
+  end
+
+  def import_k_dict() do
+    stream = File.stream!(Application.app_dir(:j_study_blog, "priv/kanjidic2.xml"))
+
+    stream
+    |> stream_tags([:character], discard: [:character])
+    |> Stream.map(fn
+      {_, entry} ->
+        now_time = NaiveDateTime.truncate(NaiveDateTime.utc_now, :second)
+        %{
+          character: entry |> xpath(~x"./literal/text()"s),
+          stroke_count: entry |> xpath(~x"./misc/stroke_count/text()"i),
+          jlpt_level: entry |> xpath(~x"./misc/jlpt/text()"s),
+          grade: entry |> xpath(~x"./misc/grade/text()"s),
+          meanings: entry|> xpath(~x"./reading_meaning/rmgroup/meaning[not(@*)]/text()"ls),
+          kunyomi: entry |> xpath(~x"./reading_meaning/rmgroup/reading[@r_type='ja_on']/text()"ls),
+          onyomi: entry |> xpath(~x"./reading_meaning/rmgroup/reading[@r_type='ja_kun']/text()"ls),
+          inserted_at: now_time,
+          updated_at: now_time
+        }
+      end)
+    |> Stream.chunk_every(25)
+    |> Enum.each(fn kanji ->
+      Repo.insert_all(Kanji, kanji)
+    end)
+  end
+
+  def import_j_dict() do
     stream = File.stream!(Application.app_dir(:j_study_blog, "priv/JMdict_e"))
 
     stream
@@ -24,39 +53,17 @@ defmodule Mix.Tasks.JDict.Import do
           meanings: entry|> xpath(~x"./sense/gloss/text()"ls),
           parts_of_speech: entry |> xpath(~x"./sense/pos/text()"ls)
         }
-        |> insert_entry
+        |> insert_vocab_entry
       end)
       |> Enum.to_list
   end
 
-  def insert_entry(entry) do
-    parts = Enum.map(entry.parts_of_speech, fn p ->
-      pos = Repo.get_by(PartOfSpeech, code: p)
-      if pos == nil do
-        {:ok, pos} = Repo.insert(%PartOfSpeech{code: p, description: ""})
-        pos
-      else
-        pos
-      end
-    end)
-
+  def insert_vocab_entry(entry) do
     vocabs = entry_to_vocabs(entry)
 
-
-    for vocab <- vocabs do
-      Multi.new()
-      |> Multi.insert(Vocab, vocab)
-      |> Multi.run(:parts, fn _repo, %{JStudyBlog.Dictionary.Vocab => v} ->
-          Enum.each(parts, fn p ->
-            part = %VocabPartsOfSpeech{parts_of_speech_id: p.id, vocab_id: v.id}
-            Multi.new()
-            |> Multi.insert(VocabPartsOfSpeech, part)
-            |> Repo.transaction()
-          end)
-          {:ok, 1}
-        end)
-      |> Repo.transaction()
-    end
+    Multi.new()
+    |> Multi.insert_all(:insert_all, Vocab, vocabs)
+    |> Repo.transaction()
   end
 
   def entry_to_vocabs(entry) do
@@ -70,9 +77,9 @@ defmodule Mix.Tasks.JDict.Import do
       0 ->
         for kana <- kanas do
           %Vocab{
-            kanji: "",
-            kana: kana,
-            meanings: Enum.map(meanings, fn m -> %VocabMeaning{definition: m, language: "en-us"} end)
+            kanji_reading: "",
+            kana_reading: kana,
+            meanings: meanings
           }
         end
       _ ->
@@ -81,16 +88,16 @@ defmodule Mix.Tasks.JDict.Import do
 
         alternate_vocabs = for {kanji, kana} <- Enum.zip(alternate_readingss, alternate_kanas) do
           %Vocab{
-            kanji: kanji,
-            kana: kana
+            kanji_reading: kanji,
+            kana_reading: kana
           }
         end
 
         [%Vocab {
-          kanji: primary_kanji,
-          kana: primary_kana,
+          kanji_reading: primary_kanji,
+          kana_reading: primary_kana,
           alternate_readings: alternate_vocabs,
-          meanings: Enum.map(meanings, fn m -> %VocabMeaning{definition: m, language: "en-us"} end)
+          meanings: meanings
         }]
     end
   end

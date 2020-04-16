@@ -121,12 +121,108 @@ defmodule JStudyBlog.Dictionary do
   def find_vocabs_by(%{kanji: k}) do
     like = "%#{k}%"
     query = from(v in Vocab,
-            where: is_nil(v.primary_kanji_id) and like(v.kanji, ^like),
-            order_by: [fragment("length(?) ASC", v.kanji)],
+            where: is_nil(v.primary_kanji_id) and like(v.kanji_reading, ^like),
+            order_by: [fragment("length(?) ASC", v.kanji_reading)],
             limit: 25)
     vocabs = Repo.all(query)
-    |> Repo.preload([:alternate_readings, :meanings, :parts_of_speech])
+    |> Repo.preload([:alternate_readings])
 
     vocabs
+  end
+
+  alias JStudyBlog.Dictionary.Kanji
+
+  @doc """
+  Returns the list of kanji.
+
+  ## Examples
+
+      iex> list_kanji()
+      [%Kanji{}, ...]
+
+  """
+  def list_kanji do
+    Repo.all(Kanji)
+  end
+
+  @doc """
+  Gets a single kanji.
+
+  Raises `Ecto.NoResultsError` if the Kanji does not exist.
+
+  ## Examples
+
+      iex> get_kanji!(123)
+      %Kanji{}
+
+      iex> get_kanji!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_kanji!(id), do: Repo.get!(Kanji, id)
+
+  @doc """
+  Creates a kanji.
+
+  ## Examples
+
+      iex> create_kanji(%{field: value})
+      {:ok, %Kanji{}}
+
+      iex> create_kanji(%{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def create_kanji(attrs \\ %{}) do
+    %Kanji{}
+    |> Kanji.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  @doc """
+  Updates a kanji.
+
+  ## Examples
+
+      iex> update_kanji(kanji, %{field: new_value})
+      {:ok, %Kanji{}}
+
+      iex> update_kanji(kanji, %{field: bad_value})
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def update_kanji(%Kanji{} = kanji, attrs) do
+    kanji
+    |> Kanji.changeset(attrs)
+    |> Repo.update()
+  end
+
+  @doc """
+  Deletes a kanji.
+
+  ## Examples
+
+      iex> delete_kanji(kanji)
+      {:ok, %Kanji{}}
+
+      iex> delete_kanji(kanji)
+      {:error, %Ecto.Changeset{}}
+
+  """
+  def delete_kanji(%Kanji{} = kanji) do
+    Repo.delete(kanji)
+  end
+
+  @doc """
+  Returns an `%Ecto.Changeset{}` for tracking kanji changes.
+
+  ## Examples
+
+      iex> change_kanji(kanji)
+      %Ecto.Changeset{source: %Kanji{}}
+
+  """
+  def change_kanji(%Kanji{} = kanji) do
+    Kanji.changeset(kanji, %{})
   end
 end

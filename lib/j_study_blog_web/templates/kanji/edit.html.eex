@@ -1,0 +1,5 @@
+<h1>Edit Kanji</h1>
+
+<%= render "form.html", Map.put(assigns, :action, Routes.kanji_path(@conn, :update, @kanji)) %>
+
+<span><%= link "Back", to: Routes.kanji_path(@conn, :index) %></span>

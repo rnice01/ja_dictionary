@@ -9,20 +9,20 @@
     <%= for vocab <- @vocabs do %>
       <div class="result">
           <h2 class="readings">
-            <span class="primary-reading"><%= vocab.kanji %></span>
-            <span class="secondary-reading"> (<%= vocab.kana %>)</span>
+            <span class="primary-reading"><%= vocab.kanji_reading %></span>
+            <span class="secondary-reading"> (<%= vocab.kana_reading %>)</span>
           </h2>
           <%= if length(vocab.alternate_readings) == 0 do %>
             <ul>
               <%= for alt <- vocab.alternate_readings do %>
-                <li><%= alt.kanji %> (<%= alt.kana %>)</li>
+                <li><%= alt.kanji_reading %> (<%= alt.kana_reading %>)</li>
               <% end %>
             </ul>
           <% end %>
           <div>
             <h3>Meanings:</h3>
             <div>
-              <%= Enum.join(Enum.map(vocab.meanings, fn vm -> vm.definition end), ", ") %>
+              <%= Enum.join(vocab.meanings) %>
             </div>
           </div>
       </div>
