@@ -9,7 +9,7 @@ defmodule JStudyBlog.Repo.Migrations.CreateVocabs do
       add :meanings, {:array, :string}
       add :primary_kanji_id, references(:vocabs, on_delete: :nothing)
 
-      timestamps()
+      timestamps(null: true)
     end
 
     create index(:vocabs, [:kanji_reading, :kana_reading, :primary_kanji_id])

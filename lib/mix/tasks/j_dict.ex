@@ -1,39 +1,21 @@
 defmodule Mix.Tasks.JDict.Import do
-  import SweetXml
   use Mix.Task
   alias JStudyBlog.Dictionary.Vocab
   alias JStudyBlog.Dictionary.Kanji
   alias JStudyBlog.Repo
-  alias JStudyBlog.JDict.VocabEntry
   alias Ecto.Multi
+  alias JStudyBlog.JDict.XMLParser
 
   @shortdoc "Imports the JDictionary and Kanjidic XML files to the database"
   def run(_) do
     Mix.Task.run("app.start")
-    import_k_dict()
-    #import_j_dict()
+    #import_k_dict()
+    import_j_dict()
   end
 
   def import_k_dict() do
-    stream = File.stream!(Application.app_dir(:j_study_blog, "priv/kanjidic2.xml"))
-
-    stream
-    |> stream_tags([:character], discard: [:character])
-    |> Stream.map(fn
-      {_, entry} ->
-        now_time = NaiveDateTime.truncate(NaiveDateTime.utc_now, :second)
-        %{
-          character: entry |> xpath(~x"./literal/text()"s),
-          stroke_count: entry |> xpath(~x"./misc/stroke_count/text()"i),
-          jlpt_level: entry |> xpath(~x"./misc/jlpt/text()"s),
-          grade: entry |> xpath(~x"./misc/grade/text()"s),
-          meanings: entry|> xpath(~x"./reading_meaning/rmgroup/meaning[not(@*)]/text()"ls),
-          kunyomi: entry |> xpath(~x"./reading_meaning/rmgroup/reading[@r_type='ja_on']/text()"ls),
-          onyomi: entry |> xpath(~x"./reading_meaning/rmgroup/reading[@r_type='ja_kun']/text()"ls),
-          inserted_at: now_time,
-          updated_at: now_time
-        }
-      end)
+    File.stream!(Application.app_dir(:j_study_blog, "priv/kanjidic2.xml"))
+    |> XMLParser.parse_kanji
     |> Stream.chunk_every(25)
     |> Enum.each(fn kanji ->
       Repo.insert_all(Kanji, kanji)
@@ -41,21 +23,12 @@ defmodule Mix.Tasks.JDict.Import do
   end
 
   def import_j_dict() do
-    stream = File.stream!(Application.app_dir(:j_study_blog, "priv/JMdict_e"))
-
-    stream
-    |> stream_tags([:entry], discard: [:entry])
-    |> Stream.map(fn
-      {_, entry} ->
-        %VocabEntry{
-          kanji_readings: entry |> xpath(~x"./k_ele/keb/text()"ls),
-          kana_readings: entry |> xpath(~x"./r_ele/reb/text()"ls),
-          meanings: entry|> xpath(~x"./sense/gloss/text()"ls),
-          parts_of_speech: entry |> xpath(~x"./sense/pos/text()"ls)
-        }
-        |> insert_vocab_entry
-      end)
-      |> Enum.to_list
+    File.stream!(Application.app_dir(:j_study_blog, "priv/JMdict_e"))
+    |> XMLParser.parse_vocab
+    |> Stream.chunk_every(25)
+    |> Enum.each(fn vocabs ->
+      insert_vocab_entry(vocabs)
+    end)
   end
 
   def insert_vocab_entry(entry) do

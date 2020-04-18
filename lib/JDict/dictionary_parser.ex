@@ -8,7 +8,7 @@ defmodule JStudyBlog.JDict.DictionaryParser do
     onyomi: list(String.t),
     kunyomi: list(String.t)
   }
-  @callback parse_kanji(Stream.t) :: {:ok, list(kanji_entry)} | {:error, String.t}
+  @callback parse_kanji(Stream.t) :: Stream.t([kanji_entry])
 
   @type vocab_entry :: %{
    kanji_readings: list(String.t),
@@ -16,6 +16,6 @@ defmodule JStudyBlog.JDict.DictionaryParser do
    meanings: list(String.t),
    parts_of_speech: list(String.t)
   }
-  @callback parse_vocab(Stream.t) :: {:ok, list(vocab_entry)} | {:error, String.t}
+  @callback parse_vocab(Stream.t) :: Stream.t([vocab_entry])
 
 end
