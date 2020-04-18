@@ -11,7 +11,7 @@ defmodule JStudyBlog.Repo.Migrations.CreateKanji do
       add :onyomi, {:array, :string}
       add :kunyomi, {:array, :string}
 
-      timestamps()
+      timestamps(null: true)
     end
 
     create index(:kanji, [:character, :jlpt_level])
