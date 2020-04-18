@@ -7,7 +7,8 @@ defmodule JStudyBlog.Dictionary.Vocab do
       kanji_reading: String.t,
       meanings: list(String.t),
       parts_of_speech: list(String.t),
-      alternate_readings: %{kana: String.t, kanji: String.t}
+      alternate_readings: %{kana: String.t, kanji: String.t},
+      kanji: list(JStudyBlog.Dictionary.Kanji.t)
     }
 
   schema "vocabs" do
