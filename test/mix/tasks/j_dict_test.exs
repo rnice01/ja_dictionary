@@ -3,6 +3,7 @@ defmodule Mix.Tasks.JDict.ImportTest do
   import JStudyBlog.Factory
 
   alias JStudyBlog.Dictionary.Vocab
+  alias JStudyBlog.Dictionary.Kanji
   alias JStudyBlog.JDict.VocabEntry
   alias Mix.Tasks.JDict.Import
   alias JStudyBlog.Repo
@@ -61,7 +62,7 @@ defmodule Mix.Tasks.JDict.ImportTest do
     end
   end
 
-  describe "insert_entry/1" do
+  describe "insert_vocab_entry/1" do
     test "vocab is created from the entry elements" do
       entry = %VocabEntry{
         kanji_readings: ["somekanji_11"],
@@ -69,8 +70,8 @@ defmodule Mix.Tasks.JDict.ImportTest do
         meanings: ["meaning1", "meaning2"]
       }
 
-      Mix.Tasks.JDict.Import.insert_entry(entry)
-      inserted = Repo.get_by(Vocab, [kanji: "somekanji_11", kana: "somekana_11"])
+      Mix.Tasks.JDict.Import.insert_vocab_entry(entry)
+      inserted = Repo.get_by(Vocab, [kanji_reading: "somekanji_11", kana_reading: "somekana_11"])
       assert %{
         kanji_reading: "somekanji_11",
         kana_reading: "somekana_11",
@@ -85,8 +86,8 @@ defmodule Mix.Tasks.JDict.ImportTest do
         meanings: ["meaning"]
       }
 
-      Mix.Tasks.JDict.Import.insert_entry(entry)
-      inserted = Repo.get_by(Vocab, [kanji: "somekanji_1"])
+      Mix.Tasks.JDict.Import.insert_vocab_entry(entry)
+      inserted = Repo.get_by(Vocab, [kanji_reading: "somekanji_1"]) |> Repo.preload([:alternate_readings])
 
       assert %{
         kanji_reading: "somekanji_1",
@@ -100,6 +101,35 @@ defmodule Mix.Tasks.JDict.ImportTest do
           %{
             kanji_reading: "somekanji_3",
             kana_reading: "kana3"
+          }
+        ]
+      } = inserted
+    end
+
+    test "kanji from the vocab associations are created if the kanji is found in the repo" do
+      insert(:kanji, %{character: "冬"})
+      insert(:kanji, %{character: "休"})
+      entry = %VocabEntry{
+        kanji_readings: ["冬休み"],
+        kana_readings: ["ふゆやすみ"],
+        meanings: ["winter vacation"],
+      }
+
+      Mix.Tasks.JDict.Import.insert_vocab_entry(entry)
+
+      inserted = Repo.get_by(Vocab, [kanji_reading: "冬休み"])
+      |> Repo.preload([:kanji])
+
+      assert %{
+        kanji_reading: "冬休み",
+        kana_reading: "ふゆやすみ",
+        meanings: ["winter vacation"],
+        kanji: [
+          %Kanji {
+            character: "冬"
+          },
+          %Kanji{
+            character: "休"
           }
         ]
       } = inserted

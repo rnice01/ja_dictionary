@@ -9,7 +9,7 @@ defmodule Mix.Tasks.JDict.Import do
   @shortdoc "Imports the JDictionary and Kanjidic XML files to the database"
   def run(_) do
     Mix.Task.run("app.start")
-    #import_k_dict()
+    import_k_dict()
     import_j_dict()
   end
 
@@ -34,9 +34,12 @@ defmodule Mix.Tasks.JDict.Import do
   def insert_vocab_entry(entry) do
     vocabs = entry_to_vocabs(entry)
 
-    Multi.new()
-    |> Multi.insert_all(:insert_all, Vocab, vocabs)
-    |> Repo.transaction()
+    for v <- vocabs do
+      Repo.insert(v)
+    end
+    #Multi.new()
+    #|> Multi.insert_all(:insert_all, Vocab, vocabs)
+    #|> Repo.transaction()
   end
 
   def entry_to_vocabs(entry) do
@@ -56,10 +59,10 @@ defmodule Mix.Tasks.JDict.Import do
           }
         end
       _ ->
-        [primary_kanji | alternate_readingss] = kanjis
+        [primary_kanji | alternate_readings] = kanjis
         [primary_kana | alternate_kanas] = kanas
 
-        alternate_vocabs = for {kanji, kana} <- Enum.zip(alternate_readingss, alternate_kanas) do
+        alternate_vocabs = for {kanji, kana} <- Enum.zip(alternate_readings, alternate_kanas) do
           %Vocab{
             kanji_reading: kanji,
             kana_reading: kana
