@@ -1,7 +1,5 @@
 const path = require('path');
 const glob = require('glob');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = (env, options) => {
@@ -9,9 +7,6 @@ module.exports = (env, options) => {
 
   return {
     optimization: {
-      minimizer: [
-        new OptimizeCSSAssetsPlugin({})
-      ]
     },
     entry: {
       'app': glob.sync('./vendor/**/*.js').concat(['./js/app.js'])
@@ -31,18 +26,9 @@ module.exports = (env, options) => {
             loader: 'babel-loader'
           }
         },
-        {
-          test: /\.[s]?css$/,
-          use: [
-            MiniCssExtractPlugin.loader,
-            'css-loader',
-            'sass-loader',
-          ],
-        }
       ]
     },
     plugins: [
-      new MiniCssExtractPlugin({ filename: '../css/app.css' }),
       new CopyWebpackPlugin([{ from: 'static/', to: '../' }])
     ]
   }
