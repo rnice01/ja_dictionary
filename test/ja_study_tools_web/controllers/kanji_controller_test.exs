@@ -49,6 +49,21 @@ defmodule JaStudyToolsWeb.KanjiControllerTest do
         "next" => Routes.kanji_path(conn, :index, offset: 150, limit: 50)
       }
     end
+
+    test "it returns 400 response if offset invalid integer value", %{conn: conn} do
+      conn = get(conn, Routes.kanji_path(conn, :index, offset: "five", limit: 50))
+      assert json_response(conn, 400)["error"] =~ "offset"
+    end
+
+    test "it returns a 400 response if limit invalid integer value", %{conn: conn} do
+      conn = get(conn, Routes.kanji_path(conn, :index, offset: "100", limit: "limit"))
+      assert json_response(conn, 400)["error"] =~ "limit"
+    end
+
+    test "it returns a 400 response if limit is > 500", %{conn: conn} do
+      conn = get(conn, Routes.kanji_path(conn, :index, offset: "100", limit: 1000))
+      assert json_response(conn, 400)["error"] =~ "Limit cannot exceed"
+    end
   end
 
   describe "create kanji" do

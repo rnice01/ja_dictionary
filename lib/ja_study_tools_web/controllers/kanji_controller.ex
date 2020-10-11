@@ -8,10 +8,12 @@ defmodule JaStudyToolsWeb.KanjiController do
 
   def index(conn, %{"offset" => offset, "limit" => limit}) do
     case try_parse_offset_limit(offset, limit) do
+      {:ok, off, lim} when lim > 500 ->
+        {:api_error, :bad_request, "Limit cannot exceed 500"}
       {:ok, off, lim} ->
         kanjis = Dictionary.list_kanjis(off, lim)
         render(conn, "list.json", kanjis: kanjis, next: Routes.kanji_path(conn, :index, offset: off + lim, limit: limit))
-      {:error, message} -> send_resp(conn, :error, message)
+      {:error, message} -> {:api_error, :bad_request, message}
     end
   end
 
@@ -52,23 +54,22 @@ defmodule JaStudyToolsWeb.KanjiController do
 
   defp try_parse_limit(result = {:ok, _}, limit) do
     result =
-      if {limit_int, _} = Integer.parse(limit) do
-        Tuple.append(result, limit_int)
-      else
-        {:err, "Invalid integer value for limit"}
+      case Integer.parse(limit) do
+        {limit_int, _} -> Tuple.append(result, limit_int)
+        :error -> {:error, "Invalid integer value for limit"}
       end
+
+      result
   end
 
   defp try_parse_limit(result, limit), do: result
 
   defp try_parse_offset_limit(offset, limit) do
     result =
-      if {offset_int, _} = Integer.parse(offset) do
-        {:ok, offset_int}
-      else
-        {:err, "Invalid integer value for offset or limit"}
+      case Integer.parse(offset) do
+        {offset_int, _} -> {:ok, offset_int}
+        :error -> {:error, "Invalid integer value for offset"}
       end
-
     result
     |> try_parse_limit(limit)
   end

@@ -21,4 +21,10 @@ defmodule JaStudyToolsWeb.FallbackController do
     |> put_view(JaStudyToolsWeb.ErrorView)
     |> render(:"404")
   end
+
+  def call(conn, {:api_error, :bad_request, msg}) do
+    conn
+    |> put_status(:bad_request)
+    |> render(JaStudyToolsWeb.ErrorView, "error.json", msg: msg)
+  end
 end
