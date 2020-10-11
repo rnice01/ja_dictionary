@@ -13,8 +13,11 @@ defmodule Mix.Tasks.Dict.Import do
   def import_k_dict() do
     File.stream!(Application.app_dir(:ja_study_tools, "priv/data/kanjidic2.xml"))
     |> XMLParser.parse_kanji
-    |> Stream.chunk_every(25)
+    |> Stream.chunk_every(100)
     |> Enum.each(fn kanji ->
+      kanji =
+        Enum.filter(kanji, fn k -> Map.get(k, :jlpt_level) != nil end)
+
       Repo.insert_all(Kanji, kanji)
     end)
   end
