@@ -1,7 +1,7 @@
 defmodule JaStudyTools.JDicts.DictParser do
   @type kanji_entry :: %{
     character: String.t,
-    jlpt_level: String.t,
+    jlpt_level: Integer.t,
     grade: String.t,
     stroke_count: Integer.t,
     meanings: list(String.t),

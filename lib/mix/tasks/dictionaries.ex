@@ -1,19 +1,17 @@
-"""
-defmodule Mix.Tasks.JDict.Import do
+defmodule Mix.Tasks.Dict.Import do
   use Mix.Task
-  alias JStudyBlog.Dictionary.Vocab
-  alias JStudyBlog.Dictionary.Kanji
-  alias JStudyBlog.Repo
-  alias Ecto.Multi
-  alias JStudyBlog.JDict.XMLParser
+  alias JaStudyTools.Dictionary.Kanji
+  alias JaStudyTools.Repo
+  alias JaStudyTools.JDicts.XMLParser
 
   @shortdoc "Imports the JDictionary and Kanjidic XML files to the database"
   def run(_) do
     Mix.Task.run("app.start")
+    import_k_dict()
   end
 
   def import_k_dict() do
-    File.stream!(Application.app_dir(:j_study_blog, "priv/kanjidic2.xml"))
+    File.stream!(Application.app_dir(:ja_study_tools, "priv/data/kanjidic2.xml"))
     |> XMLParser.parse_kanji
     |> Stream.chunk_every(25)
     |> Enum.each(fn kanji ->
@@ -21,4 +19,3 @@ defmodule Mix.Tasks.JDict.Import do
     end)
   end
 end
-"""

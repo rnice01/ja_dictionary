@@ -11,7 +11,7 @@ defmodule JaStudyTools.JDicts.XMLParser do
         %{
           character: entry |> xpath(~x"./literal/text()"s),
           stroke_count: entry |> xpath(~x"./misc/stroke_count/text()"i),
-          jlpt_level: entry |> xpath(~x"./misc/jlpt/text()"s),
+          jlpt_level: entry |> xpath(~x"./misc/jlpt/text()"io),
           grade: entry |> xpath(~x"./misc/grade/text()"s),
           meanings: entry|> xpath(~x"./reading_meaning/rmgroup/meaning[not(@*)]/text()"ls),
           onyomi: entry |> xpath(~x"./reading_meaning/rmgroup/reading[@r_type='ja_on']/text()"ls),

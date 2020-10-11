@@ -20,9 +20,10 @@ defmodule JaStudyToolsWeb.Router do
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", JaStudyToolsWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", JaStudyToolsWeb do
+    pipe_through :api
+    resources "/kanji", KanjiController
+  end
 
   # Enables LiveDashboard only for development
   #

@@ -5,6 +5,7 @@ defmodule JaStudyTools.JDicts.XMLParserTest do
   def kanji_test_stream do
     {:ok, stream} =
     """
+    <dict>
       <character>
         <literal>楽</literal>
         <misc>
@@ -30,6 +31,26 @@ defmodule JaStudyTools.JDicts.XMLParserTest do
             </rmgroup>
           </reading_meaning>
       </character>
+      <character>
+        <literal>楽</literal>
+        <misc>
+          <grade>7</grade>
+          <stroke_count>5</stroke_count>
+          <freq>1395</freq>
+        </misc>
+        <reading_meaning>
+          <rmgroup>
+            <reading r_type="korean_h">태</reading>
+            <reading r_type="vietnam">Duệ</reading>
+            <reading r_type="vietnam">Nhuệ</reading>
+            <reading r_type="ja_on">エイ</reading>
+            <reading r_type="ja_kun">するど.い</reading>
+            <meaning>pointed</meaning>
+            <meaning m_lang="fr">pointu</meaning>
+            </rmgroup>
+          </reading_meaning>
+      </character>
+    </dict>
      """
     |> StringIO.open()
 
@@ -40,21 +61,35 @@ defmodule JaStudyTools.JDicts.XMLParserTest do
     test "parsing a character from the kanjidic2" do
       kanji = XMLParser.parse_kanji(kanji_test_stream()) |> Enum.to_list()
 
-      assert kanji == [%{
+      assert kanji == [
+        %{
+          character: "楽",
+          stroke_count: 15,
+          jlpt_level: 2,
+          grade: "8",
+          kunyomi: ["するど.い"],
+          onyomi: ["エイ"],
+          meanings: [
+          "pointed",
+          "sharpness",
+          "edge",
+          "weapon",
+          "sharp",
+          "violent"
+        ]
+      },
+      %{
         character: "楽",
-        stroke_count: 15,
-        jlpt_level: "2",
-        grade: "8",
+        stroke_count: 5,
+        jlpt_level: nil,
+        grade: "7",
         kunyomi: ["するど.い"],
         onyomi: ["エイ"],
         meanings: [
         "pointed",
-        "sharpness",
-        "edge",
-        "weapon",
-        "sharp",
-        "violent"
-      ]}]
+        ]
+      }
+    ]
     end
   end
 
