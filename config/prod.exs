@@ -10,8 +10,14 @@ use Mix.Config
 # which you should run after static files are built and
 # before starting your production server.
 config :ja_study_tools, JaStudyToolsWeb.Endpoint,
-  url: [host: "example.com", port: 80],
+  http: [port: {:system, "PORT"}],
+  url: [scheme: "https", host: "cryptic-anchorage-93937.herokuapp.com", port: 443],
+  force_ssl: [rewrite_on: [:x_forwarded_proto]],
   cache_static_manifest: "priv/static/cache_manifest.json"
+
+# For development, we disable any cache and enable
+# debugging and code reloading.
+#
 
 # Do not print debug messages in production
 config :logger, level: :info
