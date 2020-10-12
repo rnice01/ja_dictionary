@@ -34,11 +34,19 @@ defmodule JaStudyToolsWeb.KanjiControllerTest do
   end
 
   describe "index" do
-    test "it sets default pagination if missing in params", %{conn: conn} do
+    test "it sets default offset and limit if missing in params", %{conn: conn} do
       conn = get(conn, Routes.kanji_path(conn, :index))
       assert json_response(conn, 200)["data"] == %{
         "kanji" => [],
         "next" => Routes.kanji_path(conn, :index, offset: 25, limit: 25)
+      }
+    end
+
+    test "it sets default offset if missing in params", %{conn: conn} do
+      conn = get(conn, Routes.kanji_path(conn, :index, limit: 250))
+      assert json_response(conn, 200)["data"] == %{
+        "kanji" => [],
+        "next" => Routes.kanji_path(conn, :index, offset: 25, limit: 250)
       }
     end
 

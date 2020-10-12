@@ -17,6 +17,7 @@ defmodule JaStudyToolsWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/dictionary", PageController, :dictionary
   end
 
   # Other scopes may use custom stacks.
