@@ -25,8 +25,10 @@ config :ja_study_tools, JaStudyToolsWeb.Endpoint,
       "node_modules/webpack/bin/webpack.js",
       "--mode",
       "development",
-      "--watch-stdin",
-      cd: Path.expand("../assets", __DIR__)
+      "--stdin",
+      "--config",
+      "node_modules/@vue/cli-service/webpack.config.js",
+      cd: Path.expand("../frontend", __DIR__)
     ]
   ]
 

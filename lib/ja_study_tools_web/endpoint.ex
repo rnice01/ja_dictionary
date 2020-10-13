@@ -24,7 +24,8 @@ defmodule JaStudyToolsWeb.Endpoint do
     at: "/",
     from: :ja_study_tools,
     gzip: false,
-    only: ~w(css fonts images js favicon.ico robots.txt)
+    only: ~w(index.html manifest.json service-worker.js css fonts img js favicon.ico robots.txt),
+    only_matching: ["precache-manifest"]
 
   # Code reloading can be explicitly enabled under the
   # :code_reloader configuration of your endpoint.
