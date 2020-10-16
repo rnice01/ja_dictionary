@@ -1,6 +1,6 @@
-defmodule JaStudyToolsWeb.KanjiView do
+defmodule JaStudyToolsWeb.API.KanjiView do
   use JaStudyToolsWeb, :view
-  alias JaStudyToolsWeb.KanjiView
+  alias JaStudyToolsWeb.API.KanjiView
 
   def render("list.json", %{kanjis: kanjis, next: next}) do
     %{

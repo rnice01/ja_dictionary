@@ -1,15 +1,23 @@
 const path = require('path')
 
 const pages = {
-    dictionary: {
-      entry: 'src/dictionary/main.ts',
-    },
+  dictionary: {
+    entry: 'src/dictionary/main.ts'
+  },
+  main: {
+    entry: 'src/main.ts'
+  }
 }
 
 module.exports = {
   configureWebpack: {
     optimization: {
       splitChunks: false
+    }
+  },
+  css: {
+    extract: {
+      filename: '/css/[name].css'
     }
   },
   pages: pages,
@@ -20,5 +28,5 @@ module.exports = {
       config.plugins.store.delete(`prefetch-${page}`)
     })
   },
-  outputDir: path.resolve(__dirname, "../priv/static")
+  outputDir: path.resolve(__dirname, '../priv/static')
 }

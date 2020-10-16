@@ -1,4 +1,4 @@
-defmodule JaStudyToolsWeb.KanjiControllerTest do
+defmodule JaStudyToolsWeb.API.KanjiControllerTest do
   use JaStudyToolsWeb.ConnCase
 
   alias JaStudyTools.Dictionary
@@ -46,7 +46,7 @@ defmodule JaStudyToolsWeb.KanjiControllerTest do
       conn = get(conn, Routes.kanji_path(conn, :index, limit: 250))
       assert json_response(conn, 200)["data"] == %{
         "kanji" => [],
-        "next" => Routes.kanji_path(conn, :index, offset: 25, limit: 250)
+        "next" => Routes.kanji_path(conn, :index, offset: 250, limit: 250)
       }
     end
 
@@ -71,71 +71,6 @@ defmodule JaStudyToolsWeb.KanjiControllerTest do
     test "it returns a 400 response if limit is > 500", %{conn: conn} do
       conn = get(conn, Routes.kanji_path(conn, :index, offset: "100", limit: 1000))
       assert json_response(conn, 400)["error"] =~ "Limit cannot exceed"
-    end
-  end
-
-  describe "create kanji" do
-    test "renders kanji when data is valid", %{conn: conn} do
-      conn = post(conn, Routes.kanji_path(conn, :create), kanji: @create_attrs)
-      assert %{"id" => id} = json_response(conn, 201)["data"]
-
-      conn = get(conn, Routes.kanji_path(conn, :show, id))
-
-      assert %{
-               "id" => id,
-               "character" => "some character",
-               "grade" => "some grade",
-               "jlpt_level" => 42,
-               "kunyomi" => [],
-               "meanings" => [],
-               "onyomi" => [],
-               "stroke_count" => 42
-             } = json_response(conn, 200)["data"]
-    end
-
-    test "renders errors when data is invalid", %{conn: conn} do
-      conn = post(conn, Routes.kanji_path(conn, :create), kanji: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
-    end
-  end
-
-  describe "update kanji" do
-    setup [:create_kanji]
-
-    test "renders kanji when data is valid", %{conn: conn, kanji: %Kanji{id: id} = kanji} do
-      conn = put(conn, Routes.kanji_path(conn, :update, kanji), kanji: @update_attrs)
-      assert %{"id" => ^id} = json_response(conn, 200)["data"]
-
-      conn = get(conn, Routes.kanji_path(conn, :show, id))
-
-      assert %{
-               "id" => id,
-               "character" => "some updated character",
-               "grade" => "some updated grade",
-               "jlpt_level" => 43,
-               "kunyomi" => [],
-               "meanings" => [],
-               "onyomi" => [],
-               "stroke_count" => 43
-             } = json_response(conn, 200)["data"]
-    end
-
-    test "renders errors when data is invalid", %{conn: conn, kanji: kanji} do
-      conn = put(conn, Routes.kanji_path(conn, :update, kanji), kanji: @invalid_attrs)
-      assert json_response(conn, 422)["errors"] != %{}
-    end
-  end
-
-  describe "delete kanji" do
-    setup [:create_kanji]
-
-    test "deletes chosen kanji", %{conn: conn, kanji: kanji} do
-      conn = delete(conn, Routes.kanji_path(conn, :delete, kanji))
-      assert response(conn, 204)
-
-      assert_error_sent 404, fn ->
-        get(conn, Routes.kanji_path(conn, :show, kanji))
-      end
     end
   end
 

@@ -105,4 +105,10 @@ defmodule JaStudyTools.Dictionary do
   def change_kanji(%Kanji{} = kanji, attrs \\ %{}) do
     Kanji.changeset(kanji, attrs)
   end
+
+  def by_kanji!(kanji) do
+    query = from k in Kanji,
+            where: k.character == ^kanji
+    Repo.one(query)
+  end
 end

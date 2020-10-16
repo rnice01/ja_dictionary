@@ -1,4 +1,4 @@
-defmodule JaStudyToolsWeb.KanjiController do
+defmodule JaStudyToolsWeb.API.KanjiController do
   use JaStudyToolsWeb, :controller
 
   alias JaStudyTools.Dictionary
@@ -17,18 +17,17 @@ defmodule JaStudyToolsWeb.KanjiController do
     end
   end
 
+  def index(conn, %{"limit" => limit}) do
+    index(conn, %{"offset" => 0, "limit" => limit})
+  end
+
+  def index(conn, %{"offset" => offset}) do
+    index(conn, %{"offset" => offset, "limit" => 25})
+  end
+
   def index(conn, _params) do
     kanjis = Dictionary.list_kanjis(0, 25)
     render(conn, "list.json", kanjis: kanjis, next: Routes.kanji_path(conn, :index, offset: 25, limit: 25))
-  end
-
-  def create(conn, %{"kanji" => kanji_params}) do
-    with {:ok, %Kanji{} = kanji} <- Dictionary.create_kanji(kanji_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", Routes.kanji_path(conn, :show, kanji))
-      |> render("show.json", kanji: kanji)
-    end
   end
 
   def show(conn, %{"id" => id}) do
@@ -36,21 +35,7 @@ defmodule JaStudyToolsWeb.KanjiController do
     render(conn, "show.json", kanji: kanji)
   end
 
-  def update(conn, %{"id" => id, "kanji" => kanji_params}) do
-    kanji = Dictionary.get_kanji!(id)
-
-    with {:ok, %Kanji{} = kanji} <- Dictionary.update_kanji(kanji, kanji_params) do
-      render(conn, "show.json", kanji: kanji)
-    end
-  end
-
-  def delete(conn, %{"id" => id}) do
-    kanji = Dictionary.get_kanji!(id)
-
-    with {:ok, %Kanji{}} <- Dictionary.delete_kanji(kanji) do
-      send_resp(conn, :no_content, "")
-    end
-  end
+  defp try_parse_limit(result = {:ok, _}, limit) when is_integer(limit), do: Tuple.append(result, limit)
 
   defp try_parse_limit(result = {:ok, _}, limit) do
     result =
@@ -63,6 +48,8 @@ defmodule JaStudyToolsWeb.KanjiController do
   end
 
   defp try_parse_limit(result, limit), do: result
+
+  defp try_parse_offset_limit(offset, limit) when is_integer(offset), do: try_parse_limit({:ok, offset}, limit)
 
   defp try_parse_offset_limit(offset, limit) do
     result =

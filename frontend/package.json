@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "eslint .",
+    "dev": "webpack --mode development --config node_modules/@vue/cli-service/webpack.config.js"
   },
   "dependencies": {
     "bootstrap": "^5.0.0-alpha2",
@@ -42,6 +43,7 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^7.0.0-0",
     "node-sass": "^4.12.0",
+    "sass": "^1.27.0",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
     "webpack-cli": "^3.3.2"

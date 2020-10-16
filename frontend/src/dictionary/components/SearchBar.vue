@@ -1,12 +1,15 @@
 <template>
   <div>
     <div class="form-group">
-      <label for="dictionary-search">Search</label>
-      <input id="dictionary-search" type="text" class="form-control" />
+      <label for="dictionary-search">Search Bar</label>
+      <input id="dictionary-search" type="text" class="form-control" v-model="state.kanjiBeingSearched" />
+    </div>
+    <div class="form-group">
+      <button type="button" class="btn btn-primary" @click="findKanjiByCharacter" @keyup.enter="findKanjiByCharacter">Search</button>
     </div>
     <div>
       <ul>
-        <li v-for="r in results" v-bind:key="`s-r-${r.id}`">
+        <li v-for="r in state.results" v-bind:key="`s-r-${r.id}`">
           {{r.character}}
         </li>
       </ul>
@@ -15,20 +18,40 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component'
+import { reactive, onBeforeMount, defineComponent } from 'vue'
+import { DictionaryApi } from '../../api'
+import Kanji from '../../types/kanji'
 
-export default class SearchBar extends Vue {
-  currentSearch: ''
-  results: []
+export default defineComponent({
+  setup () {
+    const state = reactive({
+      results: [],
+      kanjiBeingSearched: '',
+      kanji: {}
+    })
+    const api = new DictionaryApi()
 
-  created () {
-    fetch('/api/v1/kanji')
-      .then(res => res.json())
-      .then(data => {
-        this.results = data.data.kanji
-      })
+    onBeforeMount(() => {
+      fetch('/api/v1/kanji')
+        .then(res => res.json())
+        .then(data => {
+          state.results = data.data.kanji
+        })
+    })
+
+    const findKanjiByCharacter = () => {
+      api.findKanjiByCharacter(state.kanjiBeingSearched)
+        .then(k => {
+          state.kanji = k
+        })
+    }
+
+    return {
+      state,
+      findKanjiByCharacter
+    }
   }
-}
+})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

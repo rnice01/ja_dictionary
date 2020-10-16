@@ -18,6 +18,9 @@ module.exports = {
   overrides: [
     {
       files: [
+        'src/**/*.js',
+        'src/**/*.ts',
+        'src/**/*.vue',
         '**/__tests__/*.{j,t}s?(x)',
         '**/tests/unit/**/*.spec.{j,t}s?(x)'
       ],
