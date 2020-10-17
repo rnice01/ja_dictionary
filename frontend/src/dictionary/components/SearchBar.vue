@@ -2,10 +2,10 @@
   <div>
     <div class="form-group">
       <label for="dictionary-search">Search Bar</label>
-      <input id="dictionary-search" type="text" class="form-control" v-model="state.kanjiBeingSearched" />
+      <input id="dictionary-search" type="text" class="form-control" @keyup.enter="performSearch" v-model="state.searchTerm" />
     </div>
     <div class="form-group">
-      <button type="button" class="btn btn-primary" @click="performSearch" @keyup.enter="performSearch">Search</button>
+      <button type="button" class="btn btn-primary" @click="performSearch" >Search</button>
     </div>
     <div>
       <ul>
@@ -24,31 +24,23 @@ import Kanji from '../../types/kanji'
 
 export default defineComponent({
   setup () {
+    const kanjiResults: Array<Kanji> = []
     const state = reactive({
-      results: [],
-      kanjiBeingSearched: '',
-      kanji: {}
+      results: kanjiResults,
+      searchTerm: '',
     })
     const api = new DictionaryApi()
 
-    onBeforeMount(() => {
-      fetch('/api/v1/dictionary/search')
-        .then(res => res.json())
-        .then(data => {
-          state.results = data.data.kanji
-        })
-    })
-
     const performSearch = () => {
-      api.findKanjiByCharacter(state.kanjiBeingSearched)
-        .then(k => {
-          state.kanji = k
+      api.searchKanjiDictionary(state.searchTerm)
+        .then(kanji => {
+          state.results = kanji
         })
     }
 
     return {
       state,
-      findKanjiByCharacter
+      performSearch
     }
   }
 })

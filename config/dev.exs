@@ -21,18 +21,13 @@ config :ja_study_tools, JaStudyToolsWeb.Endpoint,
   code_reloader: true,
   check_origin: false,
   watchers: [
-    #node: [
-    #  "node_modules/webpack/bin/webpack.js",
-    #  "--mode",
-    #  "development",
-    #  "--stdin",
-    #  "--config",
-    #  "node_modules/@vue/cli-service/webpack.config.js",
-    #  cd: Path.expand("../frontend", __DIR__)
-    # ]
-    yarn: [
-      "run",
-      "serve",
+    node: [
+      "node_modules/webpack/bin/webpack.js",
+      "--mode",
+      "development",
+      "--stdin",
+      "--config",
+      "node_modules/@vue/cli-service/webpack.config.js",
       cd: Path.expand("../frontend", __DIR__)
     ]
   ]
