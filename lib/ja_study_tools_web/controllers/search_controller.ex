@@ -6,8 +6,8 @@ defmodule JaStudyToolsWeb.API.SearchController do
 
   action_fallback JaStudyToolsWeb.FallbackController
 
-  def index(conn, %{"kanji" => kanji}) do
-    kanji = Dictionary.by_kanji!(kanji)
-    render(conn, "kanji.json", kanji: kanji)
+  def index(conn, %{"term" => term}) do
+    kanji = Dictionary.search!(term)
+    render(conn, "results.json", kanji: kanji)
   end
 end

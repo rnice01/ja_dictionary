@@ -5,7 +5,7 @@ defmodule JaStudyTools.MixProject do
     [
       app: :ja_study_tools,
       version: "0.1.0",
-      elixir: "~> 1.10.3",
+      elixir: "~> 1.11.0",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
       start_permanent: Mix.env() == :prod,

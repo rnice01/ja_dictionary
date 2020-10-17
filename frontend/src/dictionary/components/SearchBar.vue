@@ -5,7 +5,7 @@
       <input id="dictionary-search" type="text" class="form-control" v-model="state.kanjiBeingSearched" />
     </div>
     <div class="form-group">
-      <button type="button" class="btn btn-primary" @click="findKanjiByCharacter" @keyup.enter="findKanjiByCharacter">Search</button>
+      <button type="button" class="btn btn-primary" @click="performSearch" @keyup.enter="performSearch">Search</button>
     </div>
     <div>
       <ul>
@@ -32,14 +32,14 @@ export default defineComponent({
     const api = new DictionaryApi()
 
     onBeforeMount(() => {
-      fetch('/api/v1/kanji')
+      fetch('/api/v1/dictionary/search')
         .then(res => res.json())
         .then(data => {
           state.results = data.data.kanji
         })
     })
 
-    const findKanjiByCharacter = () => {
+    const performSearch = () => {
       api.findKanjiByCharacter(state.kanjiBeingSearched)
         .then(k => {
           state.kanji = k

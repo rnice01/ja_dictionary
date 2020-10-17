@@ -109,6 +109,15 @@ defmodule JaStudyTools.Dictionary do
   def by_kanji!(kanji) do
     query = from k in Kanji,
             where: k.character == ^kanji
-    Repo.one(query)
+    Repo.all(query)
+  end
+
+  def search!(term) do
+    query = from k in Kanji,
+      where: k.character == ^term 
+      or ^term in k.meanings
+      or ^term in k.onyomi
+      or ^term in k.kunyomi
+    Repo.all(query)
   end
 end
