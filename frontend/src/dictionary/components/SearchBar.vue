@@ -27,7 +27,7 @@ export default defineComponent({
     const kanjiResults: Array<Kanji> = []
     const state = reactive({
       results: kanjiResults,
-      searchTerm: '',
+      searchTerm: ''
     })
     const api = new DictionaryApi()
 
