@@ -2,17 +2,13 @@
   <div>
     <div class="form-group">
       <label for="dictionary-search">Search Bar</label>
-      <input id="dictionary-search" type="text" class="form-control" @keyup.enter="performSearch" v-model="state.searchTerm" />
+      <input id="dictionary-search" type="text" class="form-control bg-dark text-gray-400" @keyup.enter="performSearch" v-model="state.searchTerm" />
     </div>
-    <div class="form-group">
+    <div class="form-group mt-2">
       <button type="button" class="btn btn-primary" @click="performSearch" >Search</button>
     </div>
-    <div>
-      <ul>
-        <li v-for="r in state.results" v-bind:key="`s-r-${r.id}`">
-          {{r.character}}
-        </li>
-      </ul>
+    <div class="mt-3">
+      <KanjiResults :kanjiResults="state.results"></KanjiResults>
     </div>
   </div>
 </template>
@@ -21,8 +17,12 @@
 import { reactive, onBeforeMount, defineComponent } from 'vue'
 import { DictionaryApi } from '../../api'
 import Kanji from '../../types/kanji'
+import KanjiResults from './KanjiResults.vue'
 
 export default defineComponent({
+  components: {
+    KanjiResults
+  },
   setup () {
     const kanjiResults: Array<Kanji> = []
     const state = reactive({
