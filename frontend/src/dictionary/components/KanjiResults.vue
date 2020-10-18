@@ -1,9 +1,10 @@
 <template>
   <div class="d-flex flex-wrap justify-content-center col-12">
     <div v-for="k in kanjiResults" :key="'kanji-result-' + k.id" class="card mb-3 col-md-3 col-6 mx-1 my-1 bg-dark">
-      <div class="row g-0">
-        <div class="col-md-4 display-2">
-          <strong>{{k.character}}</strong>
+      <div class="row g-0 card-body">
+        <div class="col-md-4 d-flex flex-wrap">
+          <strong class="display-2">{{k.character}}</strong>
+          <strong>{{k.strokeCount}} strokes</strong>
         </div>
         <div class="col-md-8">
           <div class="card-body">
@@ -12,7 +13,11 @@
           </div>
         </div>
       </div>
-      <div class="card-footer">
+      <div class="row g-0 card-body">
+        <div class="card-text"><strong>Grade: </strong>{{k.grade}}</div>
+        <div class="card-text"><strong>JLPT Level: </strong>{{k.jlptLevel}}</div>
+      </div>
+      <div class="card-footer p-2">
         <p>{{k.meanings}}</p>
       </div>
     </div>
@@ -32,6 +37,9 @@ export default defineComponent({
       return props.kanjiResults?.map((k: Kanji) => {
         return {
           character: k.character,
+          strokeCount: k.strokeCount,
+          grade: k.grade,
+          jlptLevel: k.jlptLevel,
           onyomi: k.onyomi.join(',  '),
           kunyomi: k.kunyomi.join(', '),
           meanings: k.meanings.join(', ')

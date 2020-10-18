@@ -1,15 +1,13 @@
 <template>
   <div>
     <div class="form-group">
-      <label for="dictionary-search">Search Bar</label>
+      <label for="dictionary-search">Search by kanji, kana, or the meaning</label>
       <input id="dictionary-search" type="text" class="form-control bg-dark text-gray-400" @keyup.enter="performSearch" v-model="state.searchTerm" />
     </div>
-    <div class="form-group mt-2">
+    <div class="form-group mt-2 mb-3">
       <button type="button" class="btn btn-primary" @click="performSearch" >Search</button>
     </div>
-    <div class="mt-3">
-      <KanjiResults :kanjiResults="state.results"></KanjiResults>
-    </div>
+    <KanjiResults :kanjiResults="state.results"></KanjiResults>
   </div>
 </template>
 
