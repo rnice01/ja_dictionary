@@ -12,4 +12,20 @@ defmodule JaStudyTools.Testing.Factory do
       stroke_count: 5
     }
   end
+
+  def admin_factory do
+    %JaStudyTools.Accounts.User{
+      username: "some admin",
+      email: "some_admin@domain.com",
+      role: "admin"
+    }
+  end
+
+  def user_factory do
+    %JaStudyTools.Accounts.User{
+      username: "some username",
+      email: "email@domain.com",
+      role: "user"
+    }
+  end
 end

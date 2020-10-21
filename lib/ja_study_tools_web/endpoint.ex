@@ -51,5 +51,6 @@ defmodule JaStudyToolsWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
+  plug Pow.Plug.Session, otp_app: :ja_study_tools
   plug JaStudyToolsWeb.Router
 end

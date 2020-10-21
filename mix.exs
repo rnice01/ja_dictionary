@@ -46,7 +46,8 @@ defmodule JaStudyTools.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:sweet_xml, "~> 0.6.6"},
-      {:ex_machina, "~> 2.4", only: :test}
+      {:ex_machina, "~> 2.4", only: :test},
+      {:pow, "~> 1.0.21"}
     ]
   end
 
