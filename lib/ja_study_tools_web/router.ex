@@ -1,5 +1,6 @@
 defmodule JaStudyToolsWeb.Router do
   use JaStudyToolsWeb, :router
+  use Pow.Phoenix.Router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,6 +14,23 @@ defmodule JaStudyToolsWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :protected do
+    plug Pow.Plug.RequireAuthenticated,
+      error_handler: Pow.Phoenix.PlugErrorHandler
+  end
+
+  pipeline :admin do
+    plug JaStudyToolsWeb.EnsureRolePlug, :admin
+  end
+
+  pipeline :admin_layout do
+    plug :put_layout, {JaStudyToolsWeb.LayoutView, :admin}
+  end
+  
+  scope "/" do
+    pow_routes()
+  end
+
   scope "/", JaStudyToolsWeb do
     pipe_through :browser
 
@@ -20,7 +38,15 @@ defmodule JaStudyToolsWeb.Router do
     get "/dictionary", PageController, :dictionary
   end
 
-  # Other scopes may use custom stacks.
+  scope "/", JaStudyToolsWeb do
+    pipe_through [:browser, :protected]
+  end
+
+  scope "/admin", JaStudyToolsWeb.Admin do
+    pipe_through [:browser, :admin_layout, :protected, :admin]
+    get "/", PageController, :index
+  end
+
   scope "/api/v1", JaStudyToolsWeb.API do
     pipe_through :api
     post "/dictionary/search", SearchController, :index
