@@ -11,6 +11,7 @@ defmodule JaStudyTools.Dictionary.Kanji do
     field :onyomi, {:array, :string}
     field :stroke_count, :integer
 
+    many_to_many :vocab, JaStudyTools.Dictionary.Vocab, join_through: "vocab_kanjis"
     timestamps()
   end
 

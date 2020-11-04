@@ -51,6 +51,7 @@ defmodule JaStudyToolsWeb.Router do
     pipe_through :api
     post "/dictionary/search", SearchController, :index
     get "/kanji", KanjiController, :index
+    get "/vocab", VocabController, :index
   end
 
   # Enables LiveDashboard only for development

@@ -10,11 +10,16 @@ defmodule JaStudyTools.JDicts.DictParser do
   }
   @callback parse_kanji(Stream.t) :: Stream.t([kanji_entry])
 
+  @type alternate_reading :: %{
+    kanji: String.t,
+    kana: String.t
+  }
   @type vocab_entry :: %{
-   kanji_readings: list(String.t),
-   kana_readings: list(String.t),
+   kanji: String.t,
+   kana: String.t,
    meanings: list(String.t),
-   parts_of_speech: list(String.t)
+   parts_of_speech: list(String.t),
+   alternate_reading: list(alternate_reading)
   }
   @callback parse_vocab(Stream.t) :: Stream.t([vocab_entry])
 
