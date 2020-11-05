@@ -133,8 +133,8 @@ defmodule JaStudyTools.Dictionary do
 
   """
   def list_vocab(offset, limit) do
-    query = from k in Vocab,
-            select: k,
+    query = from v in Vocab,
+            select: v,
             limit: ^limit,
             offset: ^offset,
             preload: [:kanji]
@@ -149,7 +149,8 @@ defmodule JaStudyTools.Dictionary do
     end
 
     query = from v in Vocab,
-            where: ^conditions
+            where: ^conditions,
+            preload: [:kanji]
 
     Repo.all(query)
   end
