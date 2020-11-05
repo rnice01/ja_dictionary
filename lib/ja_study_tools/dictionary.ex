@@ -141,13 +141,26 @@ defmodule JaStudyTools.Dictionary do
     Repo.all(query)
   end
 
-  def search_vocab!(term) do
-    term = "%#{term}%"
+  def search_vocab(term) do
+    conditions = 
+    case String.match?(term, ~r/[a-z]/i) do
+      true -> search_by_meaning(term)
+      false -> search_by_reading(term)
+    end
+
     query = from v in Vocab,
-      where: like(v.kanji_reading, ^term)
-      or ^term in v.meanings
+            where: ^conditions
 
     Repo.all(query)
+  end
+
+  defp search_by_meaning(term) do
+    dynamic([v], fragment("exists (select * from unnest(?) m WHERE m ilike ?)", v.meanings, ^"%#{term}%"))
+  end
+
+  defp search_by_reading(term) do
+    like_term = "%#{term}%"
+    dynamic([v], like(v.kanji_reading, ^like_term) or like(v.kana, ^like_term))
   end
 
 
