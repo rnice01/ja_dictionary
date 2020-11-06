@@ -81,7 +81,7 @@ defmodule JaStudyTools.JDicts.XMLParserTest do
       %{
         character: "楽",
         stroke_count: 5,
-        jlpt_level: nil,
+        jlpt_level: 0,
         grade: "7",
         kunyomi: ["するど.い"],
         onyomi: ["エイ"],

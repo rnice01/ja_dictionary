@@ -150,7 +150,7 @@ defmodule JaStudyTools.Dictionary do
 
     query = from v in Vocab,
             where: ^conditions,
-            preload: [:kanji]
+            limit: 25
 
     Repo.all(query)
   end
