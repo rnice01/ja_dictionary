@@ -7,6 +7,7 @@ defmodule JaStudyTools.Dictionary.Vocab do
     field :kanji_reading, :string
     field :meanings, {:array, :string}
     field :parts_of_speech, {:array, :string}
+    has_one :searchable, JaStudyTools.Dictionary.Search
     embeds_many :alternate_readings, JaStudyTools.Dictionary.VocabAlternateReading
 
     many_to_many :kanji, JaStudyTools.Dictionary.Kanji, join_through: "vocab_kanjis"

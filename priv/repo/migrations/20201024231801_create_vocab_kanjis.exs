@@ -4,7 +4,7 @@ defmodule JaStudyTools.Repo.Migrations.CreateVocabKanjis do
   def change  do
     create table(:vocab_kanjis) do
       add :vocab_id, references(:vocab)
-      add :kanji_id, references(:kanjis)
+      add :kanji_id, references(:kanji)
     end
     create unique_index(:vocab_kanjis, [:vocab_id, :kanji_id])
   end

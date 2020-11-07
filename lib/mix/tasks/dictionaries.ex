@@ -42,14 +42,29 @@ defmodule Mix.Tasks.Dict.Import do
             end)
           }
         end)
-      {_, vocabs} = Repo.insert_all(Vocab, vocab, returning: [:id, :kanji_reading])
+      {_, vocabs} = Repo.insert_all(Vocab, vocab, returning: [:id, :kanji_reading, :kana, :meanings, :alternate_readings])
 
       kanji_vocabs = Enum.flat_map(vocabs, fn v ->
         JaStudyTools.Dictionary.find_kanji_by_characters(v.kanji_reading)
         |> Enum.map(fn k -> %{vocab_id: v.id, kanji_id: k.id} end)
       end)
+
+      vocab_searches = Enum.map(vocabs, fn v -> v |> build_vocab_searchable end)
       
       Repo.insert_all("vocab_kanjis", kanji_vocabs)
+      Repo.insert_all("searches", vocab_searches)
     end)
+  end
+
+  defp build_vocab_searchable(vocab) do
+    %{
+      vocab_id: vocab.id,
+      english_text: Enum.join(vocab.meanings, ","),
+      japanese_text: Enum.join([
+        vocab.kanji_reading,
+        vocab.kana,
+        vocab.alternate_readings |> Enum.map(fn ar -> ~s"#{ar.kanji},#{ar.kana}" end) |> Enum.join(",")
+      ], ",")
+    }
   end
 end

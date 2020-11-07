@@ -141,29 +141,21 @@ defmodule JaStudyTools.Dictionary do
     Repo.all(query)
   end
 
-  def search_vocab(term) do
-    conditions = 
-    case String.match?(term, ~r/[a-z]/i) do
-      true -> search_by_meaning(term)
-      false -> search_by_reading(term)
-    end
+  alias JaStudyTools.Dictionary.Search
 
-    query = from v in Vocab,
+  def search_vocab(term) do
+    conditions = case String.match?(term, ~r/[a-z1-9]/i) do
+      true -> dynamic([s], fragment("to_tsvector('english', ?) @@ to_tsquery(?)", s.english_text, ^term))
+      false -> dynamic([s], ilike(s.japanese_text, ^"%#{term}%"))
+    end
+    query = from s in Search,
             where: ^conditions,
-            limit: 25
+            limit: 25,
+            preload: [:vocab]
 
     Repo.all(query)
+    |> Enum.map(fn s -> s.vocab end)
   end
-
-  defp search_by_meaning(term) do
-    dynamic([v], fragment("exists (select * from unnest(?) m WHERE m ilike ?)", v.meanings, ^"%#{term}%"))
-  end
-
-  defp search_by_reading(term) do
-    like_term = "%#{term}%"
-    dynamic([v], like(v.kanji_reading, ^like_term) or like(v.kana, ^like_term))
-  end
-
 
   @doc """
   Gets a single vocab.
