@@ -145,8 +145,8 @@ defmodule JaStudyTools.Dictionary do
 
   def search_vocab(term) do
     conditions = case String.match?(term, ~r/[a-z1-9]/i) do
-      true -> dynamic([s], fragment("to_tsvector('english', ?) @@ to_tsquery(?)", s.english_text, ^term))
-      false -> dynamic([s], ilike(s.japanese_text, ^"%#{term}%"))
+      true -> dynamic([s], fragment("? @@ to_tsquery(?)", s.english_tsv, ^term))
+      false -> dynamic([s], fragment("? @@ to_tsquery(?)", s.japanese_tsv, ^term))
     end
     query = from s in Search,
             where: ^conditions,
