@@ -3,9 +3,10 @@ use Mix.Config
 # Configure your database
 config :ja_study_tools, JaStudyTools.Repo,
   username: "postgres",
-  password: "password",
+  password: "postgres",
   database: "ja_study_tools_dev",
   hostname: "localhost",
+  port: 5433,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
