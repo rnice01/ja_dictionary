@@ -28,6 +28,7 @@ defmodule JaStudyToolsWeb.Router do
   end
   
   scope "/" do
+    pipe_through :browser
     pow_routes()
   end
 
@@ -43,8 +44,10 @@ defmodule JaStudyToolsWeb.Router do
   end
 
   scope "/admin", JaStudyToolsWeb.Admin do
-    pipe_through [:browser, :admin_layout, :protected, :admin]
+    pipe_through [:browser, :protected, :admin, :admin_layout]
     get "/", PageController, :index
+    get "/import", PageController, :import
+    post "/import", PageController, :import
   end
 
   scope "/api/v1", JaStudyToolsWeb.API do
