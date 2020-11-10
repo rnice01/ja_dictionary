@@ -81,7 +81,7 @@ defmodule JaStudyTools.JDicts.XMLParserTest do
       %{
         character: "楽",
         stroke_count: 5,
-        jlpt_level: nil,
+        jlpt_level: 0,
         grade: "7",
         kunyomi: ["するど.い"],
         onyomi: ["エイ"],
@@ -96,41 +96,99 @@ defmodule JaStudyTools.JDicts.XMLParserTest do
   def vocab_test_stream do
     {:ok, stream} =
     """
+    <doc>
     <entry>
-      <ent_seq>1232870</ent_seq>
+      <ent_seq>1000310</ent_seq>
       <k_ele>
-        <keb>許す</keb>
-        <ke_pri>ichi1</ke_pri>
-        <ke_pri>news1</ke_pri>
-        <ke_pri>nf04</ke_pri>
-      </k_ele>
-      <k_ele>
-        <keb>赦す</keb>
-      </k_ele>
-      <k_ele>
-        <keb>聴す</keb>
+        <keb>馬酔木</keb>
       </k_ele>
       <r_ele>
-        <reb>ゆるす</reb>
-        <re_pri>ichi1</re_pri>
-        <re_pri>news1</re_pri>
-        <re_pri>nf04</re_pri>
+        <reb>あせび</reb>
+      </r_ele>
+      <r_ele>
+        <reb>あしび</reb>
+      </r_ele>
+      <r_ele>
+        <reb>あせぼ</reb>
+      </r_ele>
+      <r_ele>
+        <reb>あせぶ</reb>
+      </r_ele>
+      <r_ele>
+        <reb>アセビ</reb>
+        <re_nokanji/>
       </r_ele>
       <sense>
-        <pos>v5s</pos>
-        <pos>vt</pos>
-        <gloss>to permit</gloss>
-        <gloss>to allow</gloss>
-        <gloss>to approve</gloss>
-        <gloss>to consent to</gloss>
-      </sense>
-      <sense>
-        <gloss>to forgive</gloss>
-        <gloss>to pardon</gloss>
-        <gloss>to excuse</gloss>
-        <gloss>to tolerate</gloss>
+        <pos>n</pos>
+        <misc>uk</misc>
+        <gloss>Japanese andromeda (Pieris japonica)</gloss>
+        <gloss>lily-of-the-valley</gloss>
       </sense>
     </entry>
+    <entry>
+      <ent_seq>1000320</ent_seq>
+      <k_ele>
+        <keb>彼処</keb>
+        <ke_pri>ichi1</ke_pri>
+      </k_ele>
+      <k_ele>
+        <keb>彼所</keb>
+      </k_ele>
+      <r_ele>
+        <reb>あそこ</reb>
+        <re_pri>ichi1</re_pri>
+      </r_ele>
+      <r_ele>
+        <reb>あすこ</reb>
+      </r_ele>
+      <r_ele>
+        <reb>かしこ</reb>
+      </r_ele>
+      <r_ele>
+        <reb>アソコ</reb>
+        <re_nokanji/>
+      </r_ele>
+      <r_ele>
+        <reb>あしこ</reb>
+        <re_inf>ok</re_inf>
+      </r_ele>
+      <r_ele>
+        <reb>あこ</reb>
+        <re_inf>ok</re_inf>
+      </r_ele>
+      <sense>
+        <pos>pn</pos>
+        <xref>どこ・1</xref>
+        <xref>ここ・1</xref>
+        <xref>そこ・1</xref>
+        <misc>uk</misc>
+        <gloss>there (place physically distant from both speaker and listener)</gloss>
+        <gloss>over there</gloss>
+        <gloss>that place</gloss>
+        <gloss>yonder</gloss>
+        <gloss>you-know-where</gloss>
+      </sense>
+      <sense>
+        <stagr>あそこ</stagr>
+        <stagr>あすこ</stagr>
+        <stagr>アソコ</stagr>
+        <pos>n</pos>
+        <misc>col</misc>
+        <misc>uk</misc>
+        <gloss>genitals</gloss>
+        <gloss>private parts</gloss>
+        <gloss>nether regions</gloss>
+      </sense>
+      <sense>
+        <pos>n</pos>
+        <xref>あれほど</xref>
+        <misc>uk</misc>
+        <gloss>that far (something psychologically distant from both speaker and listener)</gloss>
+        <gloss>that much</gloss>
+        <gloss>that point</gloss>
+      </sense>
+    </entry>
+    </doc>
     """
     |> StringIO.open()
 
@@ -141,20 +199,28 @@ defmodule JaStudyTools.JDicts.XMLParserTest do
     test "parsing an entry from the j_dict" do
       vocab = XMLParser.parse_vocab(vocab_test_stream()) |> Enum.to_list()
 
-      assert vocab == [%{
-        kanji_readings: ["許す", "赦す", "聴す"],
-        kana_readings: ["ゆるす"],
-        parts_of_speech: ["v5s", "vt"],
-        meanings: [
-        "to permit",
-        "to allow",
-        "to approve",
-        "to consent to",
-        "to forgive",
-        "to pardon",
-        "to excuse",
-        "to tolerate"
-      ]}]
+      assert vocab == [
+        %{
+          kanji: "馬酔木",
+          kana: "あせび",
+          parts_of_speech: ["n"],
+          meanings: ["Japanese andromeda (Pieris japonica)", "lily-of-the-valley"],
+          alternate_readings: [%{kanji: "馬酔木", kana: "あしび"}, %{kanji: "馬酔木", kana: "あせぼ"}, %{kanji: "馬酔木", kana: "あせぶ"}, %{kanji: "", kana: "アセビ"}]
+        },
+        %{
+          kanji: "彼処",
+          kana: "あそこ",
+          parts_of_speech: ["pn", "n", "n"],
+          meanings: ["there (place physically distant from both speaker and listener)", "over there", "that place", "yonder", "you-know-where", "genitals", "private parts", "nether regions", "that far (something psychologically distant from both speaker and listener)", "that much", "that point"],
+          alternate_readings: [
+            %{kanji: "彼所", kana: "あすこ"},
+            %{kanji: "彼所", kana: "かしこ"},
+            %{kanji: "彼所", kana: "あしこ"},
+            %{kanji: "彼所", kana: "あこ"},
+            %{kanji: "", kana: "アソコ"}
+          ]
+        }
+      ]
     end
   end
 end

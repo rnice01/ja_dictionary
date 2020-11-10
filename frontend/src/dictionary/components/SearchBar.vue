@@ -1,38 +1,38 @@
 <template>
   <div>
     <div class="form-group">
-      <label for="dictionary-search">Search by kanji, kana, or the meaning</label>
+      <label for="dictionary-search">Search by kanji, kana, or the english meaning</label>
       <input id="dictionary-search" type="text" class="form-control bg-dark text-gray-400" @keyup.enter="performSearch" v-model="state.searchTerm" />
     </div>
     <div class="form-group mt-2 mb-3">
       <button type="button" class="btn btn-primary" @click="performSearch" >Search</button>
     </div>
-    <KanjiResults :kanjiResults="state.results"></KanjiResults>
+    <VocabResults :vocabResults="state.results"></VocabResults>
   </div>
 </template>
 
 <script lang="ts">
 import { reactive, onBeforeMount, defineComponent } from 'vue'
 import { DictionaryApi } from '../../api'
-import Kanji from '../../types/kanji'
-import KanjiResults from './KanjiResults.vue'
+import { Vocab } from '../../types/vocab'
+import VocabResults from './VocabResults.vue'
 
 export default defineComponent({
   components: {
-    KanjiResults
+    VocabResults
   },
   setup () {
-    const kanjiResults: Array<Kanji> = []
+    const vocabResults: Array<Vocab> = []
     const state = reactive({
-      results: kanjiResults,
+      results: vocabResults,
       searchTerm: ''
     })
     const api = new DictionaryApi()
 
     const performSearch = () => {
-      api.searchKanjiDictionary(state.searchTerm)
-        .then(kanji => {
-          state.results = kanji
+      api.search(state.searchTerm)
+        .then(vocab => {
+          state.results = vocab
         })
     }
 
