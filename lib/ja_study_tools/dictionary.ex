@@ -26,6 +26,18 @@ defmodule JaStudyTools.Dictionary do
   end
 
   @doc """
+  Searches for kanji by kanji characters
+  """
+  def find_kanji_by_characters(characters) do
+    char_list = String.split(characters, "")
+
+    query = from k in Kanji,
+      where: k.character in ^char_list
+
+    Repo.all(query)
+  end
+
+  @doc """
   Gets a single kanji.
 
   Raises `Ecto.NoResultsError` if the Kanji does not exist.
@@ -112,15 +124,6 @@ defmodule JaStudyTools.Dictionary do
     Repo.all(query)
   end
 
-  def search!(term) do
-    query = from k in Kanji,
-      where: k.character == ^term 
-      or ^term in k.meanings
-      or ^term in k.onyomi
-      or ^term in k.kunyomi
-    Repo.all(query)
-  end
-
   alias JaStudyTools.Dictionary.Vocab
 
   @doc """
@@ -143,7 +146,7 @@ defmodule JaStudyTools.Dictionary do
 
   alias JaStudyTools.Dictionary.Search
 
-  def search_vocab(term) do
+  def search(term) do
     conditions = case String.match?(term, ~r/[a-z1-9]/i) do
       true -> dynamic([s], fragment("? @@ to_tsquery(?)", s.english_tsv, ^"'#{term}'"))
       false -> dynamic([s], fragment("? @@ to_tsquery(?)", s.japanese_tsv, ^"'#{term}'"))
@@ -238,12 +241,4 @@ defmodule JaStudyTools.Dictionary do
     Vocab.changeset(vocab, attrs)
   end
 
-  def find_kanji_by_characters(characters) do
-    char_list = String.split(characters, "")
-
-    query = from k in Kanji,
-      where: k.character in ^char_list
-
-    Repo.all(query)
-  end
 end
