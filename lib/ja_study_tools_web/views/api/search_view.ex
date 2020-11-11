@@ -4,15 +4,18 @@ defmodule JaStudyToolsWeb.API.SearchView do
 
   def render("results.json", %{vocab: vocab}) do
     %{
-      data: Enum.map(vocab, fn v -> 
-        %{id: v.id,
-          kanji_reading: v.kanji_reading,
-          kana: v.kana,
-          meanings: v.meanings,
-          parts_of_speech: v.parts_of_speech,
-          alternate_readings: Enum.map(v.alternate_readings, fn ar -> %{kanji: ar.kanji, kana: ar.kana} end)
-        }
-      end)
+      data: %{
+        resultsCount: length(vocab),
+        vocabResults: Enum.map(vocab, fn v -> 
+          %{id: v.id,
+            kanji_reading: v.kanji_reading,
+            kana: v.kana,
+            meanings: v.meanings,
+            parts_of_speech: v.parts_of_speech,
+            alternate_readings: Enum.map(v.alternate_readings, fn ar -> %{kanji: ar.kanji, kana: ar.kana} end)
+          }
+        end)
+      }
     }
   end
 
