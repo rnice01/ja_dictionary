@@ -17,4 +17,7 @@ defmodule JaStudyTools.DictionaryTest do
       assert result == ["綺", "麗"]
     end
   end
+
+  describe "searching by english meanings" do
+  end
 end

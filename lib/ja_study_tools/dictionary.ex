@@ -1,8 +1,4 @@
 defmodule JaStudyTools.Dictionary do
-  @moduledoc """
-  The Dictionary context.
-  """
-
   import Ecto.Query, warn: false
   alias JaStudyTools.Repo
 
@@ -146,18 +142,22 @@ defmodule JaStudyTools.Dictionary do
 
   alias JaStudyTools.Dictionary.Search
 
-  def search(term) do
+  def search(term, page, limit) do
     conditions = case String.match?(term, ~r/[a-z1-9]/i) do
       true -> dynamic([s], fragment("? @@ to_tsquery(?)", s.english_tsv, ^"'#{term}'"))
       false -> dynamic([s], fragment("? @@ to_tsquery(?)", s.japanese_tsv, ^"'#{term}'"))
     end
     query = from s in Search,
             where: ^conditions,
-            limit: 25,
             preload: [:vocab]
 
-    Repo.all(query)
-    |> Enum.map(fn s -> s.vocab end)
+    results = Repo.paginate(query, page: page, page_size: limit)
+
+    Map.put(results, :entries, Enum.map(results.entries, fn s -> s.vocab end))
+  end
+
+  def search(term) do
+    search(term, 0, 25)
   end
 
   @doc """

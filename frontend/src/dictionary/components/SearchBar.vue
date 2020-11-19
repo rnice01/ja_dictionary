@@ -9,6 +9,7 @@
     </div>
     <template v-if="state.searchState == searchStates.SEARCH_DONE">
       <p>{{state.resultsCount}} results found</p>
+      <Pagination :currentPage="state.currentPage" :totalPages="state.totalPages" @pageClicked="paginate" />
       <VocabResults :vocabResults="state.vocabResults"></VocabResults>
     </template>
     <template v-if="state.searchState == searchStates.SEARCHING">
@@ -22,10 +23,12 @@ import { reactive, onBeforeMount, defineComponent } from 'vue'
 import { DictionaryApi } from '../../api'
 import { Vocab } from '../../types/vocab'
 import VocabResults from './VocabResults.vue'
+import Pagination from './Pagination.vue'
 
 export default defineComponent({
   components: {
-    VocabResults
+    VocabResults,
+    Pagination
   },
   setup () {
     const vocabResults: Array<Vocab> = []
@@ -38,7 +41,9 @@ export default defineComponent({
       vocabResults: vocabResults,
       resultsCount: 0,
       searchTerm: '',
-      searchState: searchStates.NO_SEARCH
+      searchState: searchStates.NO_SEARCH,
+      currentPage: 0,
+      totalPages: 0 
     })
 
     const api = new DictionaryApi()
@@ -48,15 +53,27 @@ export default defineComponent({
       api.search(state.searchTerm)
         .then(results => {
           state.searchState = searchStates.SEARCH_DONE
-          state.resultsCount = Number(results.resultsCount)
           state.vocabResults = results.vocabResults
+          state.currentPage = results.currentPage
+          state.totalPages = results.totalPages
+          state.resultsCount = results.totalPages * results.resultsCount
         })
+    }
+
+    const paginate = (page: Number) => {
+      api.search(state.searchTerm, page)
+        .then(results => {
+        state.vocabResults = results.vocabResults
+        state.currentPage = results.currentPage
+        state.totalPages = results.totalPages
+      })
     }
 
     return {
       searchStates,
       state,
-      performSearch
+      performSearch,
+      paginate
     }
   }
 })
