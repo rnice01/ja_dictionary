@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "deploy": "vue-cli-service build",
-    "test": "vue-cli-service test:unit",
+    "test:unit": "vue-cli-service test:unit",
     "lint": "eslint .",
-    "dev": "webpack --mode development --config node_modules/@vue/cli-service/webpack.config.js"
+    "deploy": "vue-cli-service build",
+    "dev": "webpack --mode development --config node_modules/@vue/cli-service/webpack.config.js",
+    "test": "jest"
   },
   "dependencies": {
     "bootstrap": "^5.0.0-alpha2",
@@ -19,8 +20,10 @@
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
-    "@types/chai": "^4.2.11",
-    "@types/mocha": "^5.2.4",
+    "@types/chai": "^4.2.14",
+    "@types/jest": "^24.0.19",
+    "@types/mocha": "^8.0.4",
+    "@types/node": "^14.14.9",
     "@typescript-eslint/eslint-plugin": "^2.33.0",
     "@typescript-eslint/parser": "^2.33.0",
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -28,25 +31,26 @@
     "@vue/cli-plugin-pwa": "~4.5.0",
     "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-plugin-typescript": "~4.5.0",
+    "@vue/cli-plugin-unit-jest": "~4.5.0",
     "@vue/cli-plugin-unit-mocha": "~4.5.0",
     "@vue/cli-plugin-vuex": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "@vue/eslint-config-standard": "^5.1.2",
     "@vue/eslint-config-typescript": "^5.0.2",
-    "@vue/server-renderer": "^3.0.2",
     "@vue/test-utils": "^2.0.0-0",
-    "chai": "^4.1.2",
     "eslint": "^6.7.2",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^7.0.0-0",
+    "jest": "^26.6.3",
     "node-sass": "^4.12.0",
     "sass": "^1.27.0",
     "sass-loader": "^8.0.2",
     "typescript": "~3.9.3",
+    "vue-jest": "^5.0.0-0",
     "webpack-cli": "^3.3.2"
   }
 }

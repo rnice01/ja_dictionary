@@ -1,6 +1,7 @@
 <template>
   <div>
-    <button class="btn btn-primary" id="next-page-btn" @click="() => { pageClicked(nextPage) }">Next</button>
+    <button v-if="showPrevious" class="btn btn-primary" id="previous-page-btn" @click="() => { pageClicked(previousPage) }">Previous</button>
+    <button v-if="showNext" class="btn btn-primary" id="next-page-btn" @click="() => { pageClicked(nextPage) }">Next</button>
   </div>
 </template>
 
@@ -20,12 +21,22 @@ export default defineComponent({
   },
   data () {
     return {
-      currentPage: this.currentPage
+      currentPage: this.currentPage,
+      totalPages: this.totalPages
     }
   },
   computed: {
+    previousPage (): number {
+      return this.currentPage - 1
+    },
     nextPage (): number {
       return this.currentPage + 1
+    },
+    showPrevious (): boolean {
+      return this.currentPage > 1
+    },
+    showNext (): boolean {
+      return this.currentPage < this.totalPages
     }
   },
   methods: {

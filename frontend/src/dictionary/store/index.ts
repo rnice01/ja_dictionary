@@ -12,12 +12,12 @@ export default createStore({
     vocabResults: vocabResults
   },
   mutations: {
-    setSearchResults(state, payload: Array<Vocab>) {
+    setSearchResults (state, payload: Array<Vocab>) {
       state.vocabResults = payload
     }
   },
   actions: {
-    [actions.UPDATE_SEARCH_RESULTS] ({commit}, payload: Array<Vocab>) {
+    [actions.UPDATE_SEARCH_RESULTS] ({ commit }, payload: Array<Vocab>) {
       commit('setSearchResults', payload)
     }
   },

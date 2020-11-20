@@ -5,54 +5,52 @@
       <input id="dictionary-search" type="text" class="form-control bg-dark text-gray-400" @keyup.enter="performSearch" v-model="state.searchTerm" />
     </div>
     <div class="form-group mt-2 mb-3 pb-2">
-      <button type="button" class="btn btn-primary" @click="performSearch" >Search</button>
+      <button type="button" id="search-btn" class="btn btn-primary" @click="performSearch" >Search</button>
     </div>
-    <template v-if="state.searchState == searchStates.SEARCH_DONE">
-      <p>{{state.resultsCount}} results found</p>
+    <div v-if="state.searchDone && state.resultsCount > 0">
       <Pagination :currentPage="state.currentPage" :totalPages="state.totalPages" @pageClicked="paginate" />
-      <VocabResults :vocabResults="state.vocabResults"></VocabResults>
-    </template>
-    <template v-if="state.searchState == searchStates.SEARCHING">
-      <p>Search in progress...</p>
-    </template>
+    </div>
+    <SearchResults 
+      :isSearching="state.isSearching"
+      :searchDone="state.searchDone" 
+      :resultsCount="state.resultsCount" 
+      :vocabResults="state.vocabResults"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { reactive, onBeforeMount, defineComponent } from 'vue'
+import { reactive, defineComponent } from 'vue'
 import { DictionaryApi } from '../../api'
 import { Vocab } from '../../types/vocab'
-import VocabResults from './VocabResults.vue'
+import SearchResults from './SearchResults.vue'
 import Pagination from './Pagination.vue'
 
 export default defineComponent({
   components: {
-    VocabResults,
+    SearchResults,
     Pagination
   },
   setup () {
     const vocabResults: Array<Vocab> = []
-    const searchStates = {
-      NO_SEARCH: 0,
-      SEARCHING: 1,
-      SEARCH_DONE: 2
-    }
     const state = reactive({
       vocabResults: vocabResults,
       resultsCount: 0,
       searchTerm: '',
-      searchState: searchStates.NO_SEARCH,
+      isSearching: false,
+      searchDone: false,
       currentPage: 0,
-      totalPages: 0 
+      totalPages: 0
     })
 
-    const api = new DictionaryApi()
+    const api = new DictionaryApi();
 
     const performSearch = () => {
-      state.searchState = searchStates.SEARCHING
+      state.isSearching = true
       api.search(state.searchTerm)
         .then(results => {
-          state.searchState = searchStates.SEARCH_DONE
+          state.isSearching = false
+          state.searchDone = true
           state.vocabResults = results.vocabResults
           state.currentPage = results.currentPage
           state.totalPages = results.totalPages
@@ -60,17 +58,16 @@ export default defineComponent({
         })
     }
 
-    const paginate = (page: Number) => {
+    const paginate = (page: number) => {
       api.search(state.searchTerm, page)
         .then(results => {
-        state.vocabResults = results.vocabResults
-        state.currentPage = results.currentPage
-        state.totalPages = results.totalPages
-      })
+          state.vocabResults = results.vocabResults
+          state.currentPage = results.currentPage
+          state.totalPages = results.totalPages
+        })
     }
 
     return {
-      searchStates,
       state,
       performSearch,
       paginate
