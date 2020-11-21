@@ -4,41 +4,71 @@
       <label for="dictionary-search">Search by kanji, kana, or the english meaning</label>
       <input id="dictionary-search" type="text" class="form-control bg-dark text-gray-400" @keyup.enter="performSearch" v-model="state.searchTerm" />
     </div>
-    <div class="form-group mt-2 mb-3">
-      <button type="button" class="btn btn-primary" @click="performSearch" >Search</button>
+    <div class="form-group mt-2 mb-3 pb-2">
+      <button type="button" id="search-btn" class="btn btn-primary" @click="performSearch" >Search</button>
     </div>
-    <VocabResults :vocabResults="state.results"></VocabResults>
+    <SearchResults 
+      :isSearching="state.isSearching"
+      :searchDone="state.searchDone" 
+      :resultsCount="state.resultsCount" 
+      :vocabResults="state.vocabResults"
+      :currentPage="state.currentPage"
+      :totalPages="state.totalPages"
+      @paginate="paginate"
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { reactive, onBeforeMount, defineComponent } from 'vue'
+import { reactive, defineComponent } from 'vue'
 import { DictionaryApi } from '../../api'
 import { Vocab } from '../../types/vocab'
-import VocabResults from './VocabResults.vue'
+import SearchResults from './SearchResults.vue'
 
 export default defineComponent({
   components: {
-    VocabResults
+    SearchResults
   },
   setup () {
     const vocabResults: Array<Vocab> = []
     const state = reactive({
-      results: vocabResults,
-      searchTerm: ''
+      vocabResults: vocabResults,
+      resultsCount: 0,
+      searchTerm: '',
+      isSearching: false,
+      searchDone: false,
+      currentPage: 0,
+      totalPages: 0
     })
-    const api = new DictionaryApi()
+
+    const api = new DictionaryApi();
 
     const performSearch = () => {
+      state.isSearching = true
       api.search(state.searchTerm)
-        .then(vocab => {
-          state.results = vocab
+        .then(results => {
+          state.isSearching = false
+          state.searchDone = true
+          state.vocabResults = results.vocabResults
+          state.currentPage = results.currentPage
+          state.totalPages = results.totalPages
+          state.resultsCount = results.totalPages * results.resultsCount
+        })
+    }
+
+    const paginate = (page: number) => {
+      api.search(state.searchTerm, page)
+        .then(results => {
+          state.vocabResults = results.vocabResults
+          state.currentPage = results.currentPage
+          state.totalPages = results.totalPages
         })
     }
 
     return {
       state,
-      performSearch
+      performSearch,
+      paginate
     }
   }
 })

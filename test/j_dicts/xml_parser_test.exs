@@ -210,7 +210,7 @@ defmodule JaStudyTools.JDicts.XMLParserTest do
         %{
           kanji: "彼処",
           kana: "あそこ",
-          parts_of_speech: ["pn", "n", "n"],
+          parts_of_speech: ["pn", "n"],
           meanings: ["there (place physically distant from both speaker and listener)", "over there", "that place", "yonder", "you-know-where", "genitals", "private parts", "nether regions", "that far (something psychologically distant from both speaker and listener)", "that much", "that point"],
           alternate_readings: [
             %{kanji: "彼所", kana: "あすこ"},

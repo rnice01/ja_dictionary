@@ -32,5 +32,7 @@ npm-debug.log
 # we ignore priv/static. You may want to comment
 # this depending on your deployment strategy.
 /priv/static/
+/priv/data/JMdict_e
+/priv/data/kanjidic2.xml
 
 /config/docker.env

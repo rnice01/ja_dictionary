@@ -47,7 +47,8 @@ defmodule JaStudyTools.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:sweet_xml, "~> 0.6.6"},
       {:ex_machina, "~> 2.4", only: :test},
-      {:pow, "~> 1.0.21"}
+      {:pow, "~> 1.0.21"},
+      {:scrivener_ecto, "~> 2.0"}
     ]
   end
 

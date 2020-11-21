@@ -1,8 +1,4 @@
 defmodule JaStudyTools.Dictionary do
-  @moduledoc """
-  The Dictionary context.
-  """
-
   import Ecto.Query, warn: false
   alias JaStudyTools.Repo
 
@@ -22,6 +18,18 @@ defmodule JaStudyTools.Dictionary do
             select: k,
             limit: ^limit,
             offset: ^offset
+    Repo.all(query)
+  end
+
+  @doc """
+  Searches for kanji by kanji characters
+  """
+  def find_kanji_by_characters(characters) do
+    char_list = String.split(characters, "")
+
+    query = from k in Kanji,
+      where: k.character in ^char_list
+
     Repo.all(query)
   end
 
@@ -112,15 +120,6 @@ defmodule JaStudyTools.Dictionary do
     Repo.all(query)
   end
 
-  def search!(term) do
-    query = from k in Kanji,
-      where: k.character == ^term 
-      or ^term in k.meanings
-      or ^term in k.onyomi
-      or ^term in k.kunyomi
-    Repo.all(query)
-  end
-
   alias JaStudyTools.Dictionary.Vocab
 
   @doc """
@@ -143,18 +142,22 @@ defmodule JaStudyTools.Dictionary do
 
   alias JaStudyTools.Dictionary.Search
 
-  def search_vocab(term) do
+  def search(term, page, limit) do
     conditions = case String.match?(term, ~r/[a-z1-9]/i) do
-      true -> dynamic([s], fragment("? @@ to_tsquery(?)", s.english_tsv, ^term))
-      false -> dynamic([s], fragment("? @@ to_tsquery(?)", s.japanese_tsv, ^term))
+      true -> dynamic([s], fragment("? @@ to_tsquery(?)", s.english_tsv, ^"'#{term}'"))
+      false -> dynamic([s], fragment("? @@ to_tsquery(?)", s.japanese_tsv, ^"'#{term}'"))
     end
     query = from s in Search,
             where: ^conditions,
-            limit: 25,
             preload: [:vocab]
 
-    Repo.all(query)
-    |> Enum.map(fn s -> s.vocab end)
+    results = Repo.paginate(query, page: page, page_size: limit)
+
+    Map.put(results, :entries, Enum.map(results.entries, fn s -> s.vocab end))
+  end
+
+  def search(term) do
+    search(term, 0, 25)
   end
 
   @doc """
@@ -238,12 +241,4 @@ defmodule JaStudyTools.Dictionary do
     Vocab.changeset(vocab, attrs)
   end
 
-  def find_kanji_by_characters(characters) do
-    char_list = String.split(characters, "")
-
-    query = from k in Kanji,
-      where: k.character in ^char_list
-
-    Repo.all(query)
-  end
 end
