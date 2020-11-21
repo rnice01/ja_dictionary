@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="text-center">
     <p>{{currentPage}} of {{totalPages}}</p>
     <div class="btn-group" role="group" aria-label="Basic outlined example">
       <button
@@ -36,24 +36,22 @@ export default defineComponent({
   },
   data () {
     return {
-      state: {
-        currentPage: this.currentPage,
-        totalPages: this.totalPages
-      }
+      currentPage: this.currentPage,
+      totalPages: this.totalPages
     }
   },
   computed: {
     previousPage (): number {
-      return this.state.currentPage - 1
+      return this.currentPage - 1
     },
     nextPage (): number {
-      return this.state.currentPage + 1
+      return this.currentPage + 1
     },
     showPrevious (): boolean {
-      return this.state.currentPage > 1
+      return this.currentPage > 1
     },
     showNext (): boolean {
-      return this.state.currentPage < this.state.totalPages
+      return this.currentPage < this.totalPages
     }
   },
   methods: {
@@ -66,6 +64,4 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-  @import "css.gg/icons/css/chevron-right.css";
-  @import "css.gg/icons/css/chevron-left.css";
 </style>

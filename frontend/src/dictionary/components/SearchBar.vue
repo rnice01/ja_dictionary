@@ -7,10 +7,10 @@
     <div class="form-group mt-2 mb-3 pb-2">
       <button type="button" id="search-btn" class="btn btn-primary" @click="performSearch" >Search</button>
     </div>
-    <SearchResults 
+    <SearchResults
       :isSearching="state.isSearching"
-      :searchDone="state.searchDone" 
-      :resultsCount="state.resultsCount" 
+      :searchDone="state.searchDone"
+      :resultsCount="state.resultsCount"
       :vocabResults="state.vocabResults"
       :currentPage="state.currentPage"
       :totalPages="state.totalPages"
@@ -41,7 +41,7 @@ export default defineComponent({
       totalPages: 0
     })
 
-    const api = new DictionaryApi();
+    const api = new DictionaryApi()
 
     const performSearch = () => {
       state.isSearching = true

@@ -2,7 +2,7 @@
 FROM elixir:1.11-alpine as build
 
 # install build dependencies
-RUN apk add --update git build-base nodejs npm yarn py-pip
+RUN apk add --update git build-base nodejs npm py-pip
 
 RUN mkdir /app
 WORKDIR /app
@@ -21,7 +21,7 @@ RUN mix deps.compile
 
 # build assets
 COPY frontend frontend
-RUN cd frontend && yarn install && yarn deploy
+RUN cd frontend && npm install && npm run deploy
 RUN mix phx.digest
 
 # build project

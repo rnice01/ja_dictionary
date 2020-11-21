@@ -1,9 +1,13 @@
 <template>
   <div>
     <template v-if="hasResults">
-        <p>{{resultsCount}} results found</p>
+      <div class="row">
+        <h4 class="col-6">{{resultsCount}} results found</h4>
+        <div class="col-6 d-flex justify-content-end">
+          <Pagination :currentPage="currentPage" :totalPages="totalPages" @pageClicked="emitPageClicked" />
+        </div>
+      </div>
       <VocabResults :vocabResults="vocabResults" />
-      <Pagination :currentPage="currentPage" :totalPages="totalPages" @pageClicked="emitPageClicked" />
     </template>
     <template v-if="noResults">
       <p>No results found</p>
@@ -23,7 +27,7 @@ export default defineComponent({
   props: {
     isSearching: {
       type: Boolean,
-      default: false 
+      default: false
     },
     searchDone: {
       type: Boolean,
@@ -49,7 +53,7 @@ export default defineComponent({
   components: { VocabResults, Pagination },
   data () {
     return {
-      localIsSearching: this.isSearching,
+      searchInProgress: this.isSearching,
       vocabResults: this.vocabResults,
       resultsCount: this.resultsCount,
       searchDone: this.searchDone,
