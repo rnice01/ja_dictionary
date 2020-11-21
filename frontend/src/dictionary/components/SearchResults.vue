@@ -2,7 +2,23 @@
   <div>
     <template v-if="hasResults">
         <p>{{resultsCount}} results found</p>
-        <VocabResults :vocabResults="vocabResults"></VocabResults>
+        <div class="btn-group" role="group" aria-label="Basic outlined example">
+        <button
+         :disabled=!showPrevious
+          type="button"
+          class="btn btn-primary"
+          data-test-id="previous-page-btn"
+          @click="() => { pageClicked(previousPage) }"
+        >Previous</button>
+      <button
+       :disabled=!showNext
+        type="button"
+        class="btn btn-outline-primary"
+        data-test-id="next-page-btn"
+        @click="() => { pageClicked(nextPage) }"
+        >Next</button>
+      </div>
+      <VocabResults :vocabResults="vocabResults"></VocabResults>
     </template>
     <template v-if="noResults">
       <p>No results found</p>
@@ -34,15 +50,25 @@ export default defineComponent({
     vocabResults: {
       type: Array,
       default: () => { return [] }
+    },
+    currentPage: {
+      type: Number,
+      default: 1
+    },
+    totalPages: {
+      type: Number,
+      default: 1
     }
   },
   components: { VocabResults },
   data () {
     return {
-      searchInProgress: this.isSearching,
+      localIsSearching: this.isSearching,
       vocabResults: this.vocabResults,
       resultsCount: this.resultsCount,
-      searchDone: this.searchDone
+      searchDone: this.searchDone,
+      currentPage: this.currentPage,
+      totalPages: this.totalPages
     }
   },
   computed: {
@@ -51,6 +77,23 @@ export default defineComponent({
     },
     noResults (): boolean {
       return this.searchDone && this.resultsCount === 0
+    },
+    previousPage (): number {
+      return this.currentPage - 1
+    },
+    nextPage (): number {
+      return this.currentPage + 1
+    },
+    showPrevious (): boolean {
+      return this.currentPage > 1
+    },
+    showNext (): boolean {
+      return this.currentPage < this.totalPages
+    }
+  },
+  methods: {
+    pageClicked (page: number) {
+      this.$emit('page-clicked', page)
     }
   }
 })

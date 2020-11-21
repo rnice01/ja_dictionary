@@ -1,7 +1,21 @@
 <template>
   <div>
-    <button v-if="showPrevious" class="btn btn-primary" id="previous-page-btn" @click="() => { pageClicked(previousPage) }">Previous</button>
-    <button v-if="showNext" class="btn btn-primary" id="next-page-btn" @click="() => { pageClicked(nextPage) }">Next</button>
+    <div class="btn-group" role="group" aria-label="Basic outlined example">
+      <button
+       :disabled=!showPrevious
+        type="button"
+        class="btn btn-primary"
+        data-test-id="previous-page-btn"
+        @click="() => { pageClicked(previousPage) }"
+      >Previous</button>
+      <button
+       :disabled=!showNext
+        type="button"
+        class="btn btn-outline-primary"
+        data-test-id="next-page-btn"
+        @click="() => { pageClicked(nextPage) }"
+      >Next</button>
+    </div>
   </div>
 </template>
 
@@ -21,22 +35,24 @@ export default defineComponent({
   },
   data () {
     return {
-      currentPage: this.currentPage,
-      totalPages: this.totalPages
+      state: {
+        currentPage: this.currentPage,
+        totalPages: this.totalPages
+      }
     }
   },
   computed: {
     previousPage (): number {
-      return this.currentPage - 1
+      return this.state.currentPage - 1
     },
     nextPage (): number {
-      return this.currentPage + 1
+      return this.state.currentPage + 1
     },
     showPrevious (): boolean {
-      return this.currentPage > 1
+      return this.state.currentPage > 1
     },
     showNext (): boolean {
-      return this.currentPage < this.totalPages
+      return this.state.currentPage < this.state.totalPages
     }
   },
   methods: {

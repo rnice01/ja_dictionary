@@ -7,14 +7,14 @@
     <div class="form-group mt-2 mb-3 pb-2">
       <button type="button" id="search-btn" class="btn btn-primary" @click="performSearch" >Search</button>
     </div>
-    <div v-if="state.searchDone && state.resultsCount > 0">
-      <Pagination :currentPage="state.currentPage" :totalPages="state.totalPages" @pageClicked="paginate" />
-    </div>
     <SearchResults 
       :isSearching="state.isSearching"
       :searchDone="state.searchDone" 
       :resultsCount="state.resultsCount" 
       :vocabResults="state.vocabResults"
+      :currentPage="state.currentPage"
+      :totalPages="state.totalPages"
+      @pageClicked="paginate"
     />
   </div>
 </template>
@@ -24,12 +24,10 @@ import { reactive, defineComponent } from 'vue'
 import { DictionaryApi } from '../../api'
 import { Vocab } from '../../types/vocab'
 import SearchResults from './SearchResults.vue'
-import Pagination from './Pagination.vue'
 
 export default defineComponent({
   components: {
-    SearchResults,
-    Pagination
+    SearchResults
   },
   setup () {
     const vocabResults: Array<Vocab> = []
