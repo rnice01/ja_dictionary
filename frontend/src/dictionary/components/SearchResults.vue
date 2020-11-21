@@ -2,23 +2,8 @@
   <div>
     <template v-if="hasResults">
         <p>{{resultsCount}} results found</p>
-        <div class="btn-group" role="group" aria-label="Basic outlined example">
-        <button
-         :disabled=!showPrevious
-          type="button"
-          class="btn btn-outline-primary"
-          data-test-id="previous-page-btn"
-          @click="() => { pageClicked(previousPage) }"
-        ><i class="gg-chevron-left"></i></button>
-      <button
-       :disabled=!showNext
-        type="button"
-        class="btn btn-outline-primary"
-        data-test-id="next-page-btn"
-        @click="() => { pageClicked(nextPage) }"
-        ><i class="gg-chevron-right"></i></button>
-      </div>
-      <VocabResults :vocabResults="vocabResults"></VocabResults>
+      <VocabResults :vocabResults="vocabResults" />
+      <Pagination :currentPage="currentPage" :totalPages="totalPages" @pageClicked="emitPageClicked" />
     </template>
     <template v-if="noResults">
       <p>No results found</p>
@@ -32,9 +17,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import VocabResults from './VocabResults.vue'
-import 'css.gg/icons/css/chevron-right.css'
-import 'css.gg/icons/css/chevron-left.css'
-
+import Pagination from './Pagination.vue'
 
 export default defineComponent({
   props: {
@@ -63,7 +46,7 @@ export default defineComponent({
       default: 1
     }
   },
-  components: { VocabResults },
+  components: { VocabResults, Pagination },
   data () {
     return {
       localIsSearching: this.isSearching,
@@ -95,8 +78,8 @@ export default defineComponent({
     }
   },
   methods: {
-    pageClicked (page: number) {
-      this.$emit('page-clicked', page)
+    emitPageClicked (page: number) {
+      this.$emit('paginate', page)
     }
   }
 })

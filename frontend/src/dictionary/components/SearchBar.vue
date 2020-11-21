@@ -14,7 +14,7 @@
       :vocabResults="state.vocabResults"
       :currentPage="state.currentPage"
       :totalPages="state.totalPages"
-      @pageClicked="paginate"
+      @paginate="paginate"
     />
   </div>
 </template>
