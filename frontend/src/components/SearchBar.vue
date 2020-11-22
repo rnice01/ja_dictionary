@@ -24,6 +24,7 @@ import { reactive, defineComponent } from 'vue'
 import { DictionaryApi } from '../api'
 import { Vocab } from '../types/vocab'
 import SearchResults from './SearchResults.vue'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   components: {
@@ -42,9 +43,12 @@ export default defineComponent({
     })
 
     const api = new DictionaryApi()
+    const route = useRoute()
+    const router = useRouter()
 
     const performSearch = () => {
       state.isSearching = true
+      router.replace({ path: '/', query: { searchTerm: state.searchTerm } })
       api.search(state.searchTerm)
         .then(results => {
           state.isSearching = false
@@ -63,6 +67,11 @@ export default defineComponent({
           state.currentPage = results.currentPage
           state.totalPages = results.totalPages
         })
+    }
+
+    if (route.query.searchTerm) {
+      state.searchTerm = route.query.searchTerm as string
+      performSearch()
     }
 
     return {
