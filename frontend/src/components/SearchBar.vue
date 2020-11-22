@@ -21,8 +21,8 @@
 
 <script lang="ts">
 import { reactive, defineComponent } from 'vue'
-import { DictionaryApi } from '../../api'
-import { Vocab } from '../../types/vocab'
+import { DictionaryApi } from '../api'
+import { Vocab } from '../types/vocab'
 import SearchResults from './SearchResults.vue'
 
 export default defineComponent({

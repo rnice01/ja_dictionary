@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import SearchResults from '@/dictionary/components/SearchResults.vue'
+import SearchResults from '@/components/SearchResults.vue'
 
 
 describe('SearchResults.vue', () => {

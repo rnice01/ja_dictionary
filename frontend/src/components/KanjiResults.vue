@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts">
-import Kanji from '../../types/kanji'
+import Kanji from '../types/kanji'
 import { defineComponent, computed, PropType } from 'vue'
 
 export default defineComponent({

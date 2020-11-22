@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { Vocab } from '../../types/vocab'
+import { Vocab } from '../types/vocab'
 import { defineComponent, computed, PropType } from 'vue'
 
 export default defineComponent({

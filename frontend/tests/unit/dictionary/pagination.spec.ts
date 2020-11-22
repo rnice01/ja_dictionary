@@ -1,5 +1,5 @@
 import { mount } from '@vue/test-utils'
-import Pagination from '@/dictionary/components/Pagination.vue'
+import Pagination from '@/components/Pagination.vue'
 
 const previousBtnSelector = '[data-test-id="previous-page-btn"]'
 const nextBtnSelector = '[data-test-id="next-page-btn"]'
