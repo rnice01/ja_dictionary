@@ -1,9 +1,6 @@
 const path = require('path')
 
 const pages = {
-  dictionary: {
-    entry: 'src/dictionary/main.ts'
-  },
   main: {
     entry: 'src/main.ts'
   }

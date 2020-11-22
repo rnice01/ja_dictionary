@@ -1,2 +1,2 @@
 <div id="app"></div>
-<script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/dictionary.js") %>"></script>
+<script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/main.js") %>"></script>

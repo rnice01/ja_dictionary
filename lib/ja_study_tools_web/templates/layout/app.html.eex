@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>JaStudyTools · Phoenix Framework</title>
     <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/main.css") %>"/>
-    <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/dictionary.css") %>"/>
   </head>
   <body class="bg-gray-700 text-gray-400">
 	<%= @inner_content %>

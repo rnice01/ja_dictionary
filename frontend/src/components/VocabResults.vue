@@ -11,8 +11,7 @@
         </template>
       </div>
       <div class="row g-0 card-body">
-        <div class="card-text"><strong>Grade: </strong>{{v.grade}}</div>
-        <div class="card-text"><strong>JLPT Level: </strong>{{v.jlptLevel}}</div>
+        <div class="card-text">{{v.partsOfSpeech}}</div>
       </div>
       <div class="card-footer p-2">
         <p>{{v.meanings}}</p>

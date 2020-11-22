@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="form-group">
-      <label for="dictionary-search">Search by kanji, kana, or the english meaning</label>
+      <label for="dictionary-search">Search by Kanji, Kana, or the English meaning</label>
       <input id="dictionary-search" type="text" class="form-control bg-dark text-gray-400" @keyup.enter="performSearch" v-model="state.searchTerm" />
     </div>
     <div class="form-group mt-2 mb-3 pb-2">
