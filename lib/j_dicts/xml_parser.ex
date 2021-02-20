@@ -42,7 +42,7 @@ defmodule JaStudyTools.JDicts.XMLParser do
 
     alternate_readings = entry |> xpath(~x"./r_ele[not(re_nokanji) and not(re_pri)]/reb/text()"ls)
     |> Enum.with_index
-    |> Enum.map(fn {kana, i} -> 
+    |> Enum.map(fn {kana, i} ->
       %{
         kanji: Enum.at(alt_kanji, i, Enum.at(alt_kanji, 0)),
         kana: kana
@@ -74,4 +74,7 @@ defmodule JaStudyTools.JDicts.XMLParser do
       alternate_readings: alternate_readings ++ no_kanji_readings
     }
   end
+
+  def read_kanji(_) do end
+  def read_vocab(_) do end
 end

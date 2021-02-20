@@ -8,7 +8,8 @@ defmodule JaStudyTools.JDicts.DictParser do
     onyomi: list(String.t),
     kunyomi: list(String.t)
   }
-  @callback parse_kanji(Stream.t) :: Stream.t([kanji_entry])
+  @callback stream_kanji(Stream.t) :: Stream.t([kanji_entry])
+  @callback read_kanji(binary) :: [kanji_entry]
 
   @type alternate_reading :: %{
     kanji: String.t,
@@ -21,6 +22,7 @@ defmodule JaStudyTools.JDicts.DictParser do
    parts_of_speech: list(String.t),
    alternate_reading: list(alternate_reading)
   }
-  @callback parse_vocab(Stream.t) :: Stream.t([vocab_entry])
+  @callback stream_vocab(Stream.t) :: Stream.t([vocab_entry])
+  @callback read_vocab(binary) :: [vocab_entry]
 
 end
