@@ -37,3 +37,5 @@ npm-debug.log
 
 /config/docker.env
 /.idea
+
+/db_dump.sql

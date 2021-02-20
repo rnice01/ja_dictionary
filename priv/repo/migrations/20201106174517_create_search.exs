@@ -14,10 +14,6 @@ defmodule JaStudyTools.Repo.Migrations.CreateSearch do
       timestamps(null: true)
     end
 
-    #execute "CREATE EXTENSION pg_trgm;"
-    #execute "CREATE INDEX english_text_trgm_index ON searches USING gin (english_tsv gin_trgm_ops);"
-    #execute "CREATE INDEX japanese_text_trgm_index ON searches USING gin (japanese_tsv gin_trgm_ops);"
-
     create index(:searches, ["english_tsv", "japanese_tsv"], using: "GIN")
 
     execute"""
