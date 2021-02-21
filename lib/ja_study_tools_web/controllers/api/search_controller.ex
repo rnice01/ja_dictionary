@@ -2,13 +2,12 @@ defmodule JaStudyToolsWeb.API.SearchController do
   use JaStudyToolsWeb, :controller
 
   alias JaStudyTools.Dictionary
-  alias JaStudyTools.Dictionary.Kanji
 
   action_fallback JaStudyToolsWeb.FallbackController
 
   def index(conn, req) do
     case JaStudyToolsWeb.Models.SearchRequest.validate(req) do
-      {:ok, res} -> 
+      {:ok, res} ->
         results = Dictionary.search(res.term, res.page, res.limit)
         render(
           conn,

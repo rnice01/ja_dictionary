@@ -2,7 +2,6 @@ defmodule Mix.Tasks.Dict.Import do
   use Mix.Task
   alias JaStudyTools.Dictionary.Kanji
   alias JaStudyTools.Dictionary.Vocab
-  alias JaStudyTools.Dictionary.VocabAlternateReading
   alias JaStudyTools.Repo
   alias JaStudyTools.JDicts.XMLParser
 
@@ -28,29 +27,23 @@ defmodule Mix.Tasks.Dict.Import do
     |> Stream.chunk_every(100)
     |> Enum.each(fn vocabs ->
       vocab =
-        Enum.map(vocabs, fn v -> 
+        Enum.map(vocabs, fn v ->
           %{
-            kanji_reading: v.kanji,
-            kana: v.kana,
+            term: v.term,
+            reading: v.reading,
             meanings: v.meanings,
-            parts_of_speech: v.parts_of_speech,
-            alternate_readings: Enum.map(v.alternate_readings, fn ar -> 
-              %VocabAlternateReading{
-                kanji: ar.kanji,
-                kana: ar.kana
-              }
-            end)
+            parts_of_speech: v.parts_of_speech
           }
         end)
-      {_, vocabs} = Repo.insert_all(Vocab, vocab, returning: [:id, :kanji_reading, :kana, :meanings, :alternate_readings])
+      {_, vocabs} = Repo.insert_all(Vocab, vocab, returning: [:id, :term, :reading, :meanings])
 
       kanji_vocabs = Enum.flat_map(vocabs, fn v ->
-        JaStudyTools.Dictionary.find_kanji_by_characters(v.kanji_reading)
+        JaStudyTools.Dictionary.find_kanji_by_characters(v.term)
         |> Enum.map(fn k -> %{vocab_id: v.id, kanji_id: k.id} end)
       end)
 
       vocab_searches = Enum.map(vocabs, fn v -> v |> build_vocab_searchable end)
-      
+
       Repo.insert_all("vocab_kanjis", kanji_vocabs)
       Repo.insert_all("searches", vocab_searches)
     end)
@@ -61,9 +54,8 @@ defmodule Mix.Tasks.Dict.Import do
       vocab_id: vocab.id,
       english_text: Enum.join(vocab.meanings, ","),
       japanese_text: Enum.join([
-        vocab.kanji_reading,
-        vocab.kana,
-        vocab.alternate_readings |> Enum.map(fn ar -> ~s"#{ar.kanji},#{ar.kana}" end) |> Enum.join(",")
+        vocab.term,
+        vocab.reading
       ], ",")
     }
   end

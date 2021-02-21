@@ -3,15 +3,14 @@ defmodule JaStudyTools.Repo.Migrations.CreateVocab do
 
   def change do
     create table(:vocab) do
-      add :kanji_reading, :string, default: ""
-      add :kana, :string, default: ""
+      add :term, :string, default: ""
+      add :reading, :string, default: ""
       add :meanings, {:array, :"varchar(500)"}, default: [""]
       add :parts_of_speech, {:array, :string}, default: [""]
-      add :alternate_readings, {:array, :map}, default: []
 
       timestamps(null: true)
     end
 
-    create index(:vocab, ["kanji_reading", "kana", "alternate_readings"], unique: false)
+    create index(:vocab, ["term", "reading", "meanings"], unique: false)
   end
 end

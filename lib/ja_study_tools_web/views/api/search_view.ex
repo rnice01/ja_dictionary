@@ -1,6 +1,5 @@
 defmodule JaStudyToolsWeb.API.SearchView do
   use JaStudyToolsWeb, :view
-  alias JaStudyToolsWeb.SearchView
 
   def render("results_paginated.json", %{vocab: vocab, current_page: cp, total_pages: tp}) do
     %{
@@ -8,13 +7,12 @@ defmodule JaStudyToolsWeb.API.SearchView do
         currentPage: cp,
         totalPages: tp,
         resultsCount: length(vocab),
-        vocabResults: Enum.map(vocab, fn v -> 
+        vocabResults: Enum.map(vocab, fn v ->
           %{id: v.id,
-            kanji_reading: v.kanji_reading,
-            kana: v.kana,
+            term: v.term,
+            reading: v.reading,
             meanings: v.meanings,
-            parts_of_speech: v.parts_of_speech,
-            alternate_readings: Enum.map(v.alternate_readings, fn ar -> %{kanji: ar.kanji, kana: ar.kana} end)
+            parts_of_speech: v.parts_of_speech
           }
         end)
       }
@@ -25,13 +23,12 @@ defmodule JaStudyToolsWeb.API.SearchView do
     %{
       data: %{
         resultsCount: length(vocab),
-        vocabResults: Enum.map(vocab, fn v -> 
+        vocabResults: Enum.map(vocab, fn v ->
           %{id: v.id,
-            kanji_reading: v.kanji_reading,
-            kana: v.kana,
+            term: v.term,
+            reading: v.reading,
             meanings: v.meanings,
-            parts_of_speech: v.parts_of_speech,
-            alternate_readings: Enum.map(v.alternate_readings, fn ar -> %{kanji: ar.kanji, kana: ar.kana} end)
+            parts_of_speech: v.parts_of_speech
           }
         end)
       }
@@ -39,7 +36,7 @@ defmodule JaStudyToolsWeb.API.SearchView do
   end
 
   def render("results.json", %{kanji: kanji}) do
-    %{data: Enum.map(kanji, fn k -> 
+    %{data: Enum.map(kanji, fn k ->
       %{
         id: k.id,
         character: k.character,

@@ -1,0 +1,53 @@
+[
+  [
+    "ガチャガチャ",
+    "",
+    "n",
+    "",
+    8,
+    [
+      "capsule toy vending machine"
+    ],
+    1003120,
+    ""
+  ],
+  [
+    "ガチャガチャ",
+    "",
+    "adj-na n vs adv adv-to on-mim",
+    "vs",
+    9,
+    [
+      "clatter",
+      "clank",
+      "rattling"
+    ],
+    1003120,
+    ""
+  ],
+   [
+    "かんかん怒る",
+    "かんかんおこる",
+    "v5r",
+    "v5",
+    2,
+    [
+      "to get very mad"
+    ],
+    1003050,
+    ""
+  ],
+  [
+    "御新香",
+    "おしんこ",
+    "n",
+    "",
+    4,
+    [
+      "pickled vegetables",
+      "pickles"
+    ],
+    1002210,
+    ""
+  ]
+]

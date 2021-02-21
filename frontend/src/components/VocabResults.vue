@@ -2,12 +2,12 @@
   <div class="d-flex flex-wrap justify-content-center col-12">
     <div v-for="v in vocabResults" :key="'vocab-result-' + v.id" class="card mb-3 col-md-3 col-6 mx-1 my-1 bg-dark">
       <div class="row g-0 card-body text-center">
-        <template v-if="v.kanjiReading">
-          <strong class="display-5">{{v.kanjiReading}}</strong>
-          <strong>{{v.kana}}</strong>
+        <template v-if="v.term">
+          <strong class="display-5">{{v.term}}</strong>
+          <strong>{{v.reading}}</strong>
         </template>
         <template v-else>
-          <strong class="display-5">{{v.kana}}</strong>
+          <strong class="display-5">{{v.reading}}</strong>
         </template>
       </div>
       <div class="row g-0 card-body">
@@ -32,8 +32,8 @@ export default defineComponent({
     const vocabResults = computed(() => {
       return props.vocabResults?.map((v: Vocab) => {
         return {
-          kanjiReading: v.kanjiReading,
-          kana: v.kana,
+          term: v.term,
+          reading: v.reading,
           meanings: v.meanings.join(', '),
           partsOfSpeech: v.partsOfSpeech.join(', ')
         }

@@ -2,7 +2,6 @@ defmodule JaStudyToolsWeb.API.VocabController do
   use JaStudyToolsWeb, :controller
 
   alias JaStudyTools.Dictionary
-  alias JaStudyTools.Dictionary.Vocab
 
   action_fallback JaStudyToolsWeb.FallbackController
 
@@ -12,7 +11,7 @@ defmodule JaStudyToolsWeb.API.VocabController do
   end
 
   def search(conn, %{"search_term" => term}) do
-    vocab = Dictionary.search_vocab(term)
+    vocab = Dictionary.search(term)
     render(conn, "index.json", vocab: vocab)
   end
 end

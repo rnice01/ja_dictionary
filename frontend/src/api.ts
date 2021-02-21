@@ -1,5 +1,5 @@
 import Kanji from './types/kanji'
-import { Vocab, VocabAlternateReading } from './types/vocab'
+import { Vocab } from './types/vocab'
 
 export interface DictionaryApiInterface {
   search (searchTerm: string, page?: number): Promise<SearchResult>;
@@ -28,13 +28,10 @@ function buildSearchResult (res: any): SearchResult {
   searchResult.currentPage = res.data.currentPage
   searchResult.vocabResults = res.data.vocabResults.map((v: any) => {
     return new Vocab(
-      v.kanji_reading,
-      v.kana,
+      v.term,
+      v.reading,
       v.meanings,
       v.parts_of_speech,
-      v.alternate_readings.map((ar: any) => {
-        return new VocabAlternateReading(ar.kanji, ar.kana)
-      }) || []
     )
   })
   return searchResult

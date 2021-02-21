@@ -15,11 +15,10 @@ defmodule JaStudyTools.Testing.Factory do
 
   def vocab_factory(attrs) do
     %JaStudyTools.Dictionary.Vocab{
-      kanji_reading: Map.get(attrs, :kanji_reading, "人口"),
-      kana: Map.get(attrs, :kana, "じんこう"),
+      term: Map.get(attrs, :term, "人口"),
+      reading: Map.get(attrs, :reading, "じんこう"),
       meanings: Map.get(attrs, :meanings, ["population"]),
-      parts_of_speech: Map.get(attrs, :parts_of_speech, ["noun"]),
-      alternate_readings: Map.get(attrs, :alternate_readings, [%JaStudyTools.Dictionary.VocabAlternateReading{ kanji: "", kana: "ジンコウ"}])
+      parts_of_speech: Map.get(attrs, :parts_of_speech, ["noun"])
     }
   end
 

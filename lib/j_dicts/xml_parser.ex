@@ -1,8 +1,6 @@
 defmodule JaStudyTools.JDicts.XMLParser do
-  @behaviour JaStudyTools.JDicts.DictParser
   import SweetXml
 
-  @impl JaStudyTools.JDicts.DictParser
   def parse_kanji(kanji_stream) do
     kanji_stream
     |> stream_tags([:character], discard: [:character])
@@ -20,7 +18,6 @@ defmodule JaStudyTools.JDicts.XMLParser do
     end)
   end
 
-  @impl JaStudyTools.JDicts.DictParser
   def parse_vocab(vocab_stream) do
     vocab_stream
     |> stream_tags([:entry], discard: [:entry])
