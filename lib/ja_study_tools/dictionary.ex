@@ -143,13 +143,11 @@ defmodule JaStudyTools.Dictionary do
   alias JaStudyTools.Dictionary.Search
 
   def search(term, page, limit) do
-    conditions = case String.match?(term, ~r/[a-z1-9]/i) do
-      true -> dynamic([s], fragment("? @@ to_tsquery(?)", s.english_tsv, ^"'#{term}'"))
-      false -> dynamic([s], fragment("? @@ to_tsquery(?)", s.japanese_tsv, ^"'#{term}'"))
-    end
     query = from s in Search,
-            where: ^conditions,
-            preload: [:vocab]
+            where:
+              fragment("? &@ ?", s.english_text, ^term) or
+              fragment("? &@ ?", s.japanese_text, ^term),
+              preload: [:vocab]
 
     results = Repo.paginate(query, page: page, page_size: limit)
 

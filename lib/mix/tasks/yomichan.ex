@@ -12,7 +12,7 @@ defmodule Mix.Tasks.Dict.Yomichan do
   end
 
   defp import_jdict() do
-    ls_r(Application.app_dir(:ja_study_tools, "priv/data/yomichan_jdict"))
+    recursive_ls(Application.app_dir(:ja_study_tools, "priv/data/yomichan_jdict"))
     |> Enum.each(fn path ->
       vocab = YomichanParser.read_vocab(File.read!(path))
 
@@ -28,13 +28,13 @@ defmodule Mix.Tasks.Dict.Yomichan do
       Repo.insert_all("searches", vocab_searches)
   end
 
-  defp ls_r(path \\ ".") do
+  defp recursive_ls(path) do
     cond do
       File.regular?(path) -> [path]
       File.dir?(path) ->
         File.ls!(path)
         |> Enum.map(&Path.join(path, &1))
-        |> Enum.map(&ls_r/1)
+        |> Enum.map(&recursive_ls/1)
         |> Enum.concat
       true -> []
     end

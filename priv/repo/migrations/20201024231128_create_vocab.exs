@@ -11,6 +11,6 @@ defmodule JaStudyTools.Repo.Migrations.CreateVocab do
       timestamps(null: true)
     end
 
-    create index(:vocab, ["term", "reading", "meanings"], unique: false)
+    #create index(:vocab, ["term", "reading", "meanings"], unique: false, using: "pgroonga")
   end
 end
