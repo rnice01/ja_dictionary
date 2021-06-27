@@ -30,6 +30,9 @@ config :ja_study_tools, :pow,
   user: JaStudyTools.Accounts.User,
   repo: JaStudyTools.Repo
 
+config :ja_study_tools, JaStudyTools.ElasticsearchCluster,
+  url: System.get_env("elastic")
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

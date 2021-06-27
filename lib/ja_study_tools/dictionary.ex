@@ -140,18 +140,9 @@ defmodule JaStudyTools.Dictionary do
     Repo.all(query)
   end
 
-  alias JaStudyTools.Dictionary.Search
 
   def search(term, page, limit) do
-    query = from s in Search,
-            where:
-              fragment("? &@ ?", s.english_text, ^term) or
-              fragment("? &@ ?", s.japanese_text, ^term),
-              preload: [:vocab]
-
-    results = Repo.paginate(query, page: page, page_size: limit)
-
-    Map.put(results, :entries, Enum.map(results.entries, fn s -> s.vocab end))
+    %{entries: [], page_number: 0, total_pages: 10}
   end
 
   def search(term) do

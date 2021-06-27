@@ -48,7 +48,8 @@ defmodule JaStudyTools.MixProject do
       {:sweet_xml, "~> 0.6.6"},
       {:ex_machina, "~> 2.4", only: :test},
       {:pow, "~> 1.0.21"},
-      {:scrivener_ecto, "~> 2.0"}
+      {:scrivener_ecto, "~> 2.0"},
+      {:httpoison, "~> 1.8"},
     ]
   end
 

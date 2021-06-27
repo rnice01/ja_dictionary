@@ -1,0 +1,57 @@
+# File docker_phx/docker-compose.yml
+version: "3.5"
+
+
+networks:
+  webnet:
+    driver: bridge
+    attachable: true # Needed in order to run custom commands in the container
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: app.dockerfile
+    ports:
+      - "80:4000"
+    env_file:
+      - config/docker.env
+    depends_on:
+      - db
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+    networks:
+      - webnet
+  elastic:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.13.2
+    environment:
+      - node.name=elastic
+      - cluster.name=es-docker-cluster
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    networks:
+      - webnet
+  db:
+    image: postgres:13-alpine
+    deploy:
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+      restart_policy:
+        condition: on-failure
+    volumes:
+      - "./volumes/postgres:/var/lib/postgresql/13/main"
+    ports:
+      - "5432:5432"
+    env_file:
+      - config/docker.env
+    networks:
+      - webnet
