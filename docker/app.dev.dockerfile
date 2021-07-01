@@ -8,5 +8,4 @@ ENV APP_HOME /app
 RUN mkdir $APP_HOME
 WORKDIR $APP_HOME
 
-CMD ["mix", "ecto.reset"]
 CMD ["mix", "phx.server"]

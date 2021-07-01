@@ -25,7 +25,7 @@ defmodule Mix.Tasks.Dict.Yomichan do
       vocab_searches = vocab
       |> Enum.map(fn v -> v |> build_vocab_searchable end)
 
-      Repo.insert_all("searches", vocab_searches)
+      JaStudyTools.SearchIndex.insert_searchable_terms(vocab_searches)
   end
 
   defp recursive_ls(path) do
@@ -42,12 +42,10 @@ defmodule Mix.Tasks.Dict.Yomichan do
 
   defp build_vocab_searchable(vocab) do
     %{
-      vocab_id: vocab.id,
-      english_text: Enum.join(vocab.meanings, ","),
-      japanese_text: Enum.join([
-        vocab.term,
-        vocab.reading
-      ], ",")
+      id: vocab.id,
+      term: vocab.term,
+      reading: vocab.reading,
+      meanings: vocab.meanings,
     }
   end
 end

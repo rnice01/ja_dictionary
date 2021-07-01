@@ -55,4 +55,5 @@ RUN chown -R nobody: /app
 USER nobody
 
 ENV HOME=/app
-CMD ["bash", "/app/entrypoint.sh"]
+
+CMD ["/app/bin/ja_study_tools", "start"]
