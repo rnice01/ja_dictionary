@@ -33,6 +33,9 @@ config :ja_study_tools, :pow,
 config :ja_study_tools, JaStudyTools.ElasticsearchCluster,
   url: "http://elastic:9200"
 
+config :ja_study_tools, JaStudyTools.HTTP,
+  client: HTTPoison
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

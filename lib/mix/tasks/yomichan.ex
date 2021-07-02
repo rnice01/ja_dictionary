@@ -25,7 +25,7 @@ defmodule Mix.Tasks.Dict.Yomichan do
       vocab_searches = vocab
       |> Enum.map(fn v -> v |> build_vocab_searchable end)
 
-      JaStudyTools.SearchIndex.insert_searchable_terms(vocab_searches)
+      JaStudyTools.SearchIndex.insert_vocab_searchable(vocab_searches)
   end
 
   defp recursive_ls(path) do
@@ -46,6 +46,7 @@ defmodule Mix.Tasks.Dict.Yomichan do
       term: vocab.term,
       reading: vocab.reading,
       meanings: vocab.meanings,
+      parts_of_speech: vocab.parts_of_speech
     }
   end
 end

@@ -13,7 +13,7 @@ services:
       context: ./
       dockerfile: app.dev.dockerfile
     ports:
-      - "80:4000"
+      - "4000:4000"
     environment:
       DB_USER: postgres
       DB_PASS: postgres
@@ -39,6 +39,8 @@ services:
       memlock:
         soft: -1
         hard: -1
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
     networks:
@@ -52,10 +54,16 @@ services:
       restart_policy:
         condition: on-failure
     volumes:
-      - "./volumes/postgres:/var/lib/postgresql/13/main"
+      - pg_data:/var/lib/postgresql/13/main
     ports:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: postgres
     networks:
       - webnet
+
+volumes:
+  elastic_data:
+    driver: local
+  pg_data:
+    driver: local
