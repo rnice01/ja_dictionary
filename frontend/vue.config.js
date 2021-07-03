@@ -12,18 +12,26 @@ module.exports = {
       splitChunks: false
     }
   },
+
   css: {
     extract: {
       filename: '/css/[name].css'
     }
   },
+
   pages: pages,
   filenameHashing: false,
+
   chainWebpack: config => {
     Object.keys(pages).forEach(page => {
       config.plugins.store.delete(`preload-${page}`)
       config.plugins.store.delete(`prefetch-${page}`)
     })
   },
-  outputDir: path.resolve(__dirname, '../priv/static')
+
+  outputDir: path.resolve(__dirname, '../priv/static'),
+
+  transpileDependencies: [
+    'vuetify'
+  ]
 }

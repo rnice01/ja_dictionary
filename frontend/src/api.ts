@@ -31,7 +31,7 @@ function buildSearchResult (res: any): SearchResult {
       v.term,
       v.reading,
       v.meanings,
-      v.parts_of_speech,
+      v.parts_of_speech
     )
   })
   return searchResult

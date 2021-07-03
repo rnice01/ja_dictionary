@@ -1,7 +1,6 @@
 import { mount } from '@vue/test-utils'
 import SearchResults from '@/components/SearchResults.vue'
 
-
 describe('SearchResults.vue', () => {
   it('displays No results when searching is done and results count is 0', () => {
     const wrapper = mount(SearchResults, {
