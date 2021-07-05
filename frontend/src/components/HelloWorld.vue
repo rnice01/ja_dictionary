@@ -12,7 +12,7 @@
 
       <v-col class="mb-4">
         <h1 class="display-2 font-weight-bold mb-3">
-          Welcome to Vuetify V3 Alpha
+          Welcome to Vuetify
         </h1>
 
         <p class="subheading font-weight-regular">
@@ -29,7 +29,7 @@
         class="mb-5"
         cols="12"
       >
-        <h2 class="headline font-weight-bold mb-5">
+        <h2 class="headline font-weight-bold mb-3">
           What's next?
         </h2>
 
@@ -50,7 +50,7 @@
         class="mb-5"
         cols="12"
       >
-        <h2 class="headline font-weight-bold mb-5">
+        <h2 class="headline font-weight-bold mb-3">
           Important Links
         </h2>
 
@@ -71,7 +71,7 @@
         class="mb-5"
         cols="12"
       >
-        <h2 class="headline font-weight-bold mb-5">
+        <h2 class="headline font-weight-bold mb-3">
           Ecosystem
         </h2>
 
@@ -91,61 +91,63 @@
   </v-container>
 </template>
 
-<script lang='ts'>
-import { defineComponent } from 'vue'
+<script lang="ts">
+import Vue from 'vue'
 
-export default defineComponent({
+export default Vue.extend({
   name: 'HelloWorld',
 
-  data () {
-    return {
-      ecosystem: [
-        {
-          text: 'vuetify-loader',
-          href: 'https://github.com/vuetifyjs/vuetify-loader'
-        },
-        {
-          text: 'github',
-          href: 'https://github.com/vuetifyjs/vuetify'
-        },
-        {
-          text: 'awesome-vuetify',
-          href: 'https://github.com/vuetifyjs/awesome-vuetify'
-        }
-      ],
-      importantLinks: [
-        {
-          text: 'Chat',
-          href: 'https://community.vuetifyjs.com'
-        },
-        {
-          text: 'Made with Vuetify',
-          href: 'https://madewithvuejs.com/vuetify'
-        },
-        {
-          text: 'Twitter',
-          href: 'https://twitter.com/vuetifyjs'
-        },
-        {
-          text: 'Articles',
-          href: 'https://medium.com/vuetify'
-        }
-      ],
-      whatsNext: [
-        {
-          text: 'Explore components',
-          href: 'https://vuetifyjs.com'
-        },
-        {
-          text: 'Roadmap',
-          href: 'https://vuetifyjs.com/en/introduction/roadmap/'
-        },
-        {
-          text: 'Frequently Asked Questions',
-          href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions'
-        }
-      ]
-    }
-  }
+  data: () => ({
+    ecosystem: [
+      {
+        text: 'vuetify-loader',
+        href: 'https://github.com/vuetifyjs/vuetify-loader'
+      },
+      {
+        text: 'github',
+        href: 'https://github.com/vuetifyjs/vuetify'
+      },
+      {
+        text: 'awesome-vuetify',
+        href: 'https://github.com/vuetifyjs/awesome-vuetify'
+      }
+    ],
+    importantLinks: [
+      {
+        text: 'Documentation',
+        href: 'https://vuetifyjs.com'
+      },
+      {
+        text: 'Chat',
+        href: 'https://community.vuetifyjs.com'
+      },
+      {
+        text: 'Made with Vuetify',
+        href: 'https://madewithvuejs.com/vuetify'
+      },
+      {
+        text: 'Twitter',
+        href: 'https://twitter.com/vuetifyjs'
+      },
+      {
+        text: 'Articles',
+        href: 'https://medium.com/vuetify'
+      }
+    ],
+    whatsNext: [
+      {
+        text: 'Explore components',
+        href: 'https://vuetifyjs.com/components/api-explorer'
+      },
+      {
+        text: 'Select a layout',
+        href: 'https://vuetifyjs.com/getting-started/pre-made-layouts'
+      },
+      {
+        text: 'Frequently Asked Questions',
+        href: 'https://vuetifyjs.com/getting-started/frequently-asked-questions'
+      }
+    ]
+  })
 })
 </script>

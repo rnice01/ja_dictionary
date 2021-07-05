@@ -1,25 +1,18 @@
 <template>
   <v-app>
-      <v-app-bar density="compact">
-      <v-app-bar-title>JA Study Tools</v-app-bar-title>
-  
-      <v-spacer></v-spacer>
-  
-      <v-btn text><router-link class="nav-link" to="/">Home</router-link></v-btn>
-  
-      <v-btn class="mr-3" text><router-link class="nav-link" to="/about">About</router-link></v-btn>
-  
-      <v-divider inset vertical></v-divider>
-  
-      <v-btn
-        class="mr-4 ml-5"
+    <v-card class="overflow-hidden">
+      <v-app-bar
         color="primary"
-        plain
+        dark
+        prominent
       >
-        <v-icon left icon="mdi-handshake-outline"></v-icon>
-        <span>JST</span>
-      </v-btn>
-    </v-app-bar>
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-toolbar-title>JA Study Tools</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn text class="mr-3"><router-link class="text--secondary text-subtitle-1 font-weight-bold text-decoration-none" to="/">Home</router-link></v-btn>
+        <v-btn text><router-link class="text--secondary text-subtitle-1 font-weight-bold text-decoration-none" to="/about">About</router-link></v-btn>
+      </v-app-bar>
+    </v-card>
     <v-main>
       <router-view/>
     </v-main>
@@ -27,15 +20,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import Vue from 'vue'
 
-export default defineComponent({
+export default Vue.extend({
   name: 'App',
 
-  data () {
-    return {
-      //
-    }
-  }
+  data: () => ({
+    //
+  })
 })
 </script>

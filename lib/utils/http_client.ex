@@ -15,8 +15,8 @@ defmodule JaStudyTools.Utils.HTTPClient do
   @impl JaStudyTools.Utils.HTTPClientBehavior
   def post(url, body, headers \\ []) do
     case HTTPoison.post(url, body, headers) do
-      {:ok, res} -> {:ok, res.body}
-      {:error, err} -> {:error, err.message}
+      {:ok, res} -> {:ok, res}
+      {:error, _} -> {:error, ""}
     end
   end
 end

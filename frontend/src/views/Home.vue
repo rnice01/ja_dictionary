@@ -3,14 +3,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
 import SearchBar from '../components/SearchBar.vue'
 
-export default defineComponent({
+export default {
   name: 'Home',
 
   components: {
     SearchBar
   }
-})
+}
 </script>
