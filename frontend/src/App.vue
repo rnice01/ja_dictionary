@@ -7,10 +7,10 @@
         prominent
       >
         <v-app-bar-nav-icon></v-app-bar-nav-icon>
-        <v-toolbar-title>JA Study Tools</v-toolbar-title>
+        <v-toolbar-title class="accent--text">JA Study Tools</v-toolbar-title>
         <v-spacer></v-spacer>
-        <v-btn text class="mr-3"><router-link class="text--secondary text-subtitle-1 font-weight-bold text-decoration-none" to="/">Home</router-link></v-btn>
-        <v-btn text><router-link class="text--secondary text-subtitle-1 font-weight-bold text-decoration-none" to="/about">About</router-link></v-btn>
+        <v-btn text class="mr-3"><router-link class="accent--text text-subtitle-1 font-weight-bold text-decoration-none" to="/">Home</router-link></v-btn>
+        <v-btn text><router-link class="accent--text text-subtitle-1 font-weight-bold text-decoration-none" to="/about">About</router-link></v-btn>
       </v-app-bar>
     </v-card>
     <v-main>

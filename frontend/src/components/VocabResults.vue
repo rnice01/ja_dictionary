@@ -4,15 +4,14 @@
     wrap
   >
     <v-card 
-      class="background mx-auto my-3"
-      height="100%"
+      color="blue-grey darken-4"
+      class="mx-auto my-3"
       width="100%"
       max-width="344"
-      v-for="v in vocabResults" :key="'vocab-result-' + v.id"
+      v-for="v in vocabResults" :key="'vocab-result-' + v.term"
       >
       <v-card-text>
-        <p class="text-h6">{{v.reading}}</p>
-        <p class="text-h4">{{v.term}}</p>
+        <p class="text-h4"><ruby>{{v.term}}<rt>{{v.reading}}</rt></ruby></p>
         <p>{{v.partsOfSpeech}}</p>
         <v-divider></v-divider>
         <p>{{v.meanings}}</p>

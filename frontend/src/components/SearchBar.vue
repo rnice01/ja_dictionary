@@ -6,16 +6,20 @@
           cols="12"
         >
          <v-text-field
-           solo
+            outlined 
             v-model="searchTerm"
             label="Search by Kanji, Kana, or the English meaning"
             required
             @keyup.enter="performSearch"
           ></v-text-field>
         </v-col>
-      </v-row>
-      <v-row>
-        <v-btn class="secondary" @click="performSearch">Search</v-btn>
+        <v-btn 
+          large 
+          no-gutters
+          class="secondary"
+          @click="performSearch"
+          :block="$vuetify.breakpoint.xsOnly"
+        >Search</v-btn>
       </v-row>
       <v-row>
         <search-results />

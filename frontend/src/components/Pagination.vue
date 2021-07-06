@@ -2,20 +2,17 @@
   <div class="text-center">
     <p>{{currentPage}} of {{totalPages}}</p>
     <div class="btn-group" role="group" aria-label="Basic outlined example">
-      <button
+      <v-btn
        :disabled=!showPrevious
-        type="button"
-        class="btn btn-outline-primary"
         data-test-id="previous-page-btn"
-        @click="() => { pageClicked(previousPage) }"
-      ><i class="gg-chevron-left"></i></button>
-    <button
+        class="mr-2"
+        @click="paginatePrevious"
+      ><v-icon large color="secondary">mdi-chevron-left</v-icon></v-btn>
+    <v-btn
      :disabled=!showNext
-      type="button"
-      class="btn btn-outline-primary"
       data-test-id="next-page-btn"
-      @click="() => { pageClicked(nextPage) }"
-      ><i class="gg-chevron-right"></i></button>
+      @click="paginateNext"
+      ><v-icon large color="secondary">mdi-chevron-right</v-icon></v-btn>
     </div>
   </div>
 </template>
@@ -34,8 +31,6 @@ export default {
   },
   data () {
     return {
-      currentPage: this.currentPage,
-      totalPages: this.totalPages
     }
   },
   computed: {
@@ -53,8 +48,11 @@ export default {
     }
   },
   methods: {
-    pageClicked (page: number) {
-      this.$emit('page-clicked', page)
+    paginateNext () {
+      this.$emit('page-clicked', this.currentPage + 1)
+    },
+    paginatePrevious () {
+      this.$emit('page-clicked', this.currentPage - 1)
     }
   }
 }

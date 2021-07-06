@@ -13,13 +13,14 @@ interface RootState {
 }
 
 export interface SearchResults {
-    currentPage: number,
     totalPages: number,
     vocabResults: Vocab[]
 }
 
 interface SearchState {
   searchResults: SearchResults
+  currentPage: number,
+  searchTerm: string
   isSearching: boolean,
   searchPerformed: boolean,
 }
@@ -29,10 +30,11 @@ type SearchContext = ActionContext<SearchState, RootState>
 const searchModule = {
   state: (): SearchState => ({
     searchResults: {
-      currentPage: 0,
       totalPages: 0,
       vocabResults: []
     },
+    currentPage: 1,
+    searchTerm: '',
     isSearching: false,
     searchPerformed: false
   }),
@@ -43,19 +45,37 @@ const searchModule = {
     updateSearchResults: (state: SearchState, payload: any) => {
       state.searchResults.vocabResults = payload.vocab
       state.searchResults.totalPages = payload.totalPages
-      state.searchResults.currentPage = payload.currentPage
     },
     searchPerformed: (state: SearchState) => {
       state.searchPerformed = true
+    },
+    setSearchTerm: (state: SearchState, searchTerm: string) => {
+      state.searchTerm = searchTerm
+    },
+    setCurrentPage: (state: SearchState, page: number) => {
+      state.currentPage = page
     }
   },
   actions: {
+    paginate: (context: SearchContext, page: number) => {
+        context.commit('isSearching', true)
+	context.commit('setCurrentPage', page)
+	api.search(context.state.searchTerm, page)
+	  .then(results => {
+            context.commit('isSearching', false)
+	    context.commit('updateSearchResults', {vocab: results.vocabResults, totalPages: results.totalPages})
+	  })
+	  .catch(res => {
+            context.commit('setError', 'Uh oh, something bad happened. Please contact administrator is issue persists')
+	  })
+    },
     search: (context: SearchContext, searchTerm: string) => {
       context.commit('isSearching', true)
+      context.commit('setSearchTerm', searchTerm)
       api.search(searchTerm)
         .then(results => {
           context.commit('isSearching', false)
-          context.commit('updateSearchResults', {vocab: results.vocabResults, currentPage: results.currentPage, totalPages: results.totalPages})
+          context.commit('updateSearchResults', {vocab: results.vocabResults, totalPages: results.totalPages})
         })
         .catch(res => {
           context.commit('setError', 'Unable to perform search')
