@@ -1,30 +1,32 @@
 <template>
-  <header class="text-gray-700 body-font mb-5">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <h3>JA Dict</h3>
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <router-link class="nav-link" to="/">Home</router-link>
-        </li>
-        <li class="nav-item">
-          <router-link class="nav-link" to="/about">About</router-link>
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-</header>
-  <main class="container">
-  <router-view/>
-  </main>
+  <v-app>
+    <v-card class="overflow-hidden">
+      <v-app-bar
+        color="primary"
+        dark
+        prominent
+      >
+        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+        <v-toolbar-title class="accent--text">JA Study Tools</v-toolbar-title>
+        <v-spacer></v-spacer>
+        <v-btn text class="mr-3"><router-link class="accent--text text-subtitle-1 font-weight-bold text-decoration-none" to="/">Home</router-link></v-btn>
+        <v-btn text><router-link class="accent--text text-subtitle-1 font-weight-bold text-decoration-none" to="/about">About</router-link></v-btn>
+      </v-app-bar>
+    </v-card>
+    <v-main>
+      <router-view/>
+    </v-main>
+  </v-app>
 </template>
 
-<style lang="scss">
-</style>
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
+  name: 'App',
+
+  data: () => ({
+    //
+  })
+})
+</script>

@@ -1,36 +1,36 @@
 <template>
-  <div class="d-flex flex-wrap justify-content-center col-12">
-    <div v-for="v in vocabResults" :key="'vocab-result-' + v.id" class="card mb-3 col-md-3 col-6 mx-1 my-1 bg-dark">
-      <div class="row g-0 card-body text-center">
-        <template v-if="v.term">
-          <strong class="display-5">{{v.term}}</strong>
-          <strong>{{v.reading}}</strong>
-        </template>
-        <template v-else>
-          <strong class="display-5">{{v.reading}}</strong>
-        </template>
-      </div>
-      <div class="row g-0 card-body">
-        <div class="card-text">{{v.partsOfSpeech}}</div>
-      </div>
-      <div class="card-footer p-2">
+  <v-layout
+    row 
+    wrap
+  >
+    <v-card 
+      color="blue-grey darken-4"
+      class="mx-auto my-3"
+      width="100%"
+      max-width="344"
+      v-for="v in vocabResults" :key="'vocab-result-' + v.term"
+      >
+      <v-card-text>
+        <p class="text-h4"><ruby>{{v.term}}<rt>{{v.reading}}</rt></ruby></p>
+        <p>{{v.partsOfSpeech}}</p>
+        <v-divider></v-divider>
         <p>{{v.meanings}}</p>
-      </div>
-    </div>
-  </div>
+      </v-card-text>
+    </v-card>
+  </v-layout>
 </template>
 
 <script lang="ts">
 import { Vocab } from '../types/vocab'
-import { defineComponent, computed, PropType } from 'vue'
+import { PropType } from 'vue'
 
-export default defineComponent({
+export default {
   props: {
     vocabResults: Array as PropType<Vocab[]>
   },
-  setup (props) {
-    const vocabResults = computed(() => {
-      return props.vocabResults?.map((v: Vocab) => {
+  computed: {
+    vocabResults () {
+      return this.$props.vocabResults?.map((v: Vocab) => {
         return {
           term: v.term,
           reading: v.reading,
@@ -38,12 +38,9 @@ export default defineComponent({
           partsOfSpeech: v.partsOfSpeech.join(', ')
         }
       }) || []
-    })
-    return {
-      vocabResults
     }
   }
-})
+}
 </script>
 
 <style lang="scss">

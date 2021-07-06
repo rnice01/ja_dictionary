@@ -60,7 +60,8 @@ defmodule JaStudyTools.SearchAPI do
   end
 
   defp parse_vocab_search_response(res) do
-    decoded = Jason.decode!(res)
+    IO.inspect res.body
+    decoded = Jason.decode!(res.body)
     %{
       terms: Enum.map(decoded["hits"]["hits"], fn hit ->
         %{

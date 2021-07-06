@@ -1,17 +1,15 @@
 <template>
-  <div>
-    <SearchBar />
-  </div>
+  <search-bar/>
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component'
 import SearchBar from '../components/SearchBar.vue'
 
-@Options({
+export default {
+  name: 'Home',
+
   components: {
     SearchBar
   }
-})
-export default class Home extends Vue {}
+}
 </script>

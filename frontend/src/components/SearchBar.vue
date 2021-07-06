@@ -1,88 +1,56 @@
 <template>
-  <div>
-    <div class="form-group">
-      <label for="dictionary-search">Search by Kanji, Kana, or the English meaning</label>
-      <input id="dictionary-search" type="text" class="form-control bg-dark text-gray-400" @keyup.enter="performSearch" v-model="state.searchTerm" />
-    </div>
-    <div class="form-group mt-2 mb-3 pb-2">
-      <button type="button" id="search-btn" class="btn btn-primary" @click="performSearch" >Search</button>
-    </div>
-    <SearchResults
-      :isSearching="state.isSearching"
-      :searchDone="state.searchDone"
-      :resultsCount="state.resultsCount"
-      :vocabResults="state.vocabResults"
-      :currentPage="state.currentPage"
-      :totalPages="state.totalPages"
-      @paginate="paginate"
-    />
-  </div>
+  <v-form>
+    <v-container>
+      <v-row>
+        <v-col
+          cols="12"
+        >
+         <v-text-field
+            outlined 
+            v-model="searchTerm"
+            label="Search by Kanji, Kana, or the English meaning"
+            required
+            @keyup.enter="performSearch"
+          ></v-text-field>
+        </v-col>
+        <v-btn 
+          large 
+          no-gutters
+          class="secondary"
+          @click="performSearch"
+          :block="$vuetify.breakpoint.xsOnly"
+        >Search</v-btn>
+      </v-row>
+      <v-row>
+        <search-results />
+      </v-row>
+    </v-container>
+  </v-form>
 </template>
 
 <script lang="ts">
-import { reactive, defineComponent } from 'vue'
-import { DictionaryApi } from '../api'
-import { Vocab } from '../types/vocab'
 import SearchResults from './SearchResults.vue'
-import { useRoute, useRouter } from 'vue-router'
 
-export default defineComponent({
+export default {
+  data: () => {
+    return {
+      searchTerm: '',
+    }
+  },
+  methods: {
+    performSearch () {
+      this.isSearching = true
+      this.$router.replace({ path: '/', query: { searchTerm: this.searchTerm } })
+      this.$store.dispatch('search', this.searchTerm)
+    }
+  },
+  computed: {
+    searchResults () {
+      this.$store.getters.searchResults
+    }
+  },
   components: {
     SearchResults
-  },
-  setup () {
-    const vocabResults: Array<Vocab> = []
-    const state = reactive({
-      vocabResults: vocabResults,
-      resultsCount: 0,
-      searchTerm: '',
-      isSearching: false,
-      searchDone: false,
-      currentPage: 0,
-      totalPages: 0
-    })
-
-    const api = new DictionaryApi()
-    const route = useRoute()
-    const router = useRouter()
-
-    const performSearch = () => {
-      state.isSearching = true
-      router.replace({ path: '/', query: { searchTerm: state.searchTerm } })
-      api.search(state.searchTerm)
-        .then(results => {
-          state.isSearching = false
-          state.searchDone = true
-          state.vocabResults = results.vocabResults
-          state.currentPage = results.currentPage
-          state.totalPages = results.totalPages
-          state.resultsCount = results.totalPages * results.resultsCount
-        })
-    }
-
-    const paginate = (page: number) => {
-      api.search(state.searchTerm, page)
-        .then(results => {
-          state.vocabResults = results.vocabResults
-          state.currentPage = results.currentPage
-          state.totalPages = results.totalPages
-        })
-    }
-
-    if (route.query.searchTerm) {
-      state.searchTerm = route.query.searchTerm as string
-      performSearch()
-    }
-
-    return {
-      state,
-      performSearch,
-      paginate
-    }
   }
-})
+}
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-</style>

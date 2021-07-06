@@ -14,7 +14,8 @@ module.exports = {
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'vue/no-dupe-keys': 0
+    'vue/no-dupe-keys': 0,
+    'no-var-requirs': 0
   },
   overrides: [
     {

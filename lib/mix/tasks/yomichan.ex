@@ -16,7 +16,7 @@ defmodule Mix.Tasks.Dict.Yomichan do
     |> Enum.each(fn path ->
       vocab = YomichanParser.read_vocab(File.read!(path))
 
-      Repo.insert_all(Vocab, vocab, returning: [:id, :term, :reading, :meanings])
+      Repo.insert_all(Vocab, vocab, returning: [:id, :term, :reading, :meanings, :parts_of_speech])
       |> insert_searches
     end)
   end
@@ -25,7 +25,7 @@ defmodule Mix.Tasks.Dict.Yomichan do
       vocab_searches = vocab
       |> Enum.map(fn v -> v |> build_vocab_searchable end)
 
-      JaStudyTools.SearchIndex.insert_vocab_searchable(vocab_searches)
+      JaStudyTools.SearchAPI.insert_vocab_searchable(vocab_searches)
   end
 
   defp recursive_ls(path) do
