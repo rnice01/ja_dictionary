@@ -28,6 +28,7 @@ function buildSearchResult (res: any): SearchResult {
   searchResult.currentPage = res.data.currentPage
   searchResult.vocabResults = res.data.vocabResults.map((v: any) => {
     return new Vocab(
+      v.id,
       v.term,
       v.reading,
       v.meanings,

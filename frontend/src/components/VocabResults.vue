@@ -8,7 +8,7 @@
       class="mx-auto my-3"
       width="100%"
       max-width="344"
-      v-for="v in vocabResults" :key="'vocab-result-' + v.term"
+      v-for="v in vocabResults" :key="'vocab-result-' + v.id"
       >
       <v-card-text>
         <p class="text-h4"><ruby>{{v.term}}<rt>{{v.reading}}</rt></ruby></p>
@@ -32,6 +32,7 @@ export default {
     vocabResults () {
       return this.$props.vocabResults?.map((v: Vocab) => {
         return {
+          id: v.id,
           term: v.term,
           reading: v.reading,
           meanings: v.meanings.join(', '),
