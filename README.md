@@ -1,20 +1,17 @@
 # JaStudyTools
 
-To start your Phoenix server:
+Development:
+  I have a Docker Compose file for running this project in dev mode. In the root of the project run the following:
 
-  * Install dependencies with `mix deps.get`
-  * Create and migrate your database with `mix ecto.setup`
-  * Install Node.js dependencies with `npm install` inside the `assets` directory
-  * Start Phoenix endpoint with `mix phx.server`
+  `docker-compose -f docker/docker-compose.dev.yml up`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+  If this is the first time starting the containers, you'll also need to run:
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
-## Learn more
+ `docker-compose -f docker/docker-compose.dev.yml run app mix ecto.reset`
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+ `docker-compose -f docker/docker-compose.dev.yml run app mix dict.yomichan`
+
+ The first command creates the app's database in the postgres container if it doesn't exist. If it does, it'll drop the database and create a new one.
+
+ The second command runs a mix task that reads through some JSON files to fill the DB with dictionary entries and index the data in the elasticsearch container.
