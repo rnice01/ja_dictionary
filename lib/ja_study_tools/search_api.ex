@@ -60,12 +60,11 @@ defmodule JaStudyTools.SearchAPI do
   end
 
   defp parse_vocab_search_response(res) do
-    IO.inspect res.body
     decoded = Jason.decode!(res.body)
     %{
       terms: Enum.map(decoded["hits"]["hits"], fn hit ->
         %{
-          id: hit["_source"]["_id"],
+          id: hit["_id"],
           term: hit["_source"]["term"],
           reading: hit["_source"]["reading"],
           meanings: hit["_source"]["meanings"],
