@@ -26,7 +26,7 @@ defmodule JaStudyToolsWeb.Router do
   pipeline :admin_layout do
     plug :put_layout, {JaStudyToolsWeb.LayoutView, :admin}
   end
-  
+
   scope "/" do
     pipe_through :browser
     pow_routes()
@@ -52,6 +52,7 @@ defmodule JaStudyToolsWeb.Router do
   scope "/api/v1", JaStudyToolsWeb.API do
     pipe_through :api
     post "/dictionary/search", SearchController, :index
+    post "/tokenize", TokenizerController, :index
     get "/kanji", KanjiController, :index
     get "/vocab", VocabController, :index
   end

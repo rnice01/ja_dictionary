@@ -1,30 +1,28 @@
 <template>
   <v-form>
-    <v-container>
-      <v-row>
-        <v-col
-          cols="12"
-        >
-         <v-text-field
-            outlined 
-            v-model="searchTerm"
-            label="Search by Kanji, Kana, or the English meaning"
-            required
-            @keyup.enter="performSearch"
-          ></v-text-field>
-        </v-col>
-        <v-btn 
-          large 
-          no-gutters
-          class="secondary"
-          @click="performSearch"
-          :block="$vuetify.breakpoint.xsOnly"
-        >Search</v-btn>
-      </v-row>
-      <v-row>
-        <search-results />
-      </v-row>
-    </v-container>
+    <v-row>
+      <v-col
+        cols="12"
+      >
+       <v-text-field
+          outlined 
+          v-model="searchTerm"
+          label="Search by Kanji, Kana, or the English meaning"
+          required
+          @keyup.enter="performSearch"
+        ></v-text-field>
+      </v-col>
+      <v-btn 
+        large 
+        no-gutters
+        class="secondary"
+        @click="performSearch"
+        :block="$vuetify.breakpoint.xsOnly"
+      >Search</v-btn>
+    </v-row>
+    <v-row>
+      <search-results />
+    </v-row>
   </v-form>
 </template>
 

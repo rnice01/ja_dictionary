@@ -2,11 +2,11 @@ import { Vocab } from '@/types/vocab'
 import Vue from 'vue'
 import Vuex from 'vuex'
 import { ActionContext } from 'vuex'
-import { DictionaryApi } from '../api'
+import { Api } from '../api'
 
 Vue.use(Vuex)
 
-const api = new DictionaryApi()
+const api = new Api()
 
 interface RootState {
   error: null

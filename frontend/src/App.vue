@@ -11,10 +11,13 @@
         <v-spacer></v-spacer>
         <v-btn text class="mr-3"><router-link class="accent--text text-subtitle-1 font-weight-bold text-decoration-none" to="/">Home</router-link></v-btn>
         <v-btn text><router-link class="accent--text text-subtitle-1 font-weight-bold text-decoration-none" to="/about">About</router-link></v-btn>
+        <v-btn text><router-link class="accent--text text-subtitle-1 font-weight-bold text-decoration-none" to="/tokenizer">Tokenizer</router-link></v-btn>
       </v-app-bar>
     </v-card>
     <v-main>
-      <router-view/>
+      <v-container>
+        <router-view/>
+      </v-container>
     </v-main>
   </v-app>
 </template>
